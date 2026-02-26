@@ -1,0 +1,72 @@
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: learn-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage/app/artworks:/var/www/html/storage/app/artworks
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=learn
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=secret
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - learn-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: learn-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: learn
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - learn-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: learn-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://app:8000
+    depends_on:
+      - app
+    networks:
+      - learn-network
+
+volumes:
+  pgdata:
+
+networks:
+  learn-network:
+    driver: bridge

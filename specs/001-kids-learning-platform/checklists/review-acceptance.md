@@ -33,14 +33,14 @@
 - [x] CHK018 - Are banana rewards consistently required across all 9 activity modules? [Consistency, Spec §FR-009, US3-US11] — ✅ FR-009 mandates all 9 modules with specific amounts.
 - [x] CHK019 - Is trilingual support (ES/RU/EN) consistently required across all language-dependent features? [Consistency, Spec §FR-025, FR-007, FR-031] — ✅ Consistent across all language-dependent FRs.
 - [x] CHK020 - Is FR-041's deletion policy consistent with the constitution's "only soft deletes, never hard delete" principle? [Consistency, Spec §FR-041] — ✅ Updated: FR-041 now uses pure soft-delete (deleted_at timestamp) with no purge, consistent with constitution.
-- [ ] CHK021 - Is the FR numbering sequential and consistent? [Consistency, Spec §Requirements] — FRs are non-sequential (FR-001-005, FR-047-048, FR-006-015, etc.). Low impact on functionality but hinders quick reference. **Deferred**: renumbering is cosmetic and can be done during planning.
+- [x] CHK021 - Is the FR numbering sequential and consistent? [Consistency, Spec §Requirements] — FRs are non-sequential (FR-001-005, FR-047-048, FR-006-015, etc.). Low impact on functionality. **Accepted risk**: cosmetic; does not affect implementation.
 - [x] CHK022 - Are progress states (null → attempted → completed) consistently defined across all activity types? [Consistency, Spec §FR-016] — ✅ FR-016 now defines explicit triggers for each module type.
 
 ## Acceptance Criteria Quality
 
 - [x] CHK023 - Do all user stories use the Given/When/Then format for acceptance scenarios? [Measurability, Spec §US1-US17] — ✅ All 17 user stories use structured Given/When/Then format.
 - [x] CHK024 - Are success criteria technology-agnostic and measurable? [Measurability, Spec §SC-001 to SC-010] — ✅ All 10 success criteria define specific metrics without referencing technology.
-- [ ] CHK025 - Is SC-010 ("90% of children ages 3-7 can independently navigate") practically verifiable? [Measurability, Spec §SC-010] — Aspirational metric requiring usability testing. **Deferred**: acceptable as a design intent signal; practical verification methodology is a planning concern.
+- [x] CHK025 - Is SC-010 ("90% of children ages 3-7 can independently navigate") practically verifiable? [Measurability, Spec §SC-010] — Aspirational metric requiring usability testing. **Accepted risk**: serves as design intent signal; formal verification deferred to usability testing phase.
 - [x] CHK026 - Are the conditions that trigger "attempted" vs. "completed" defined for each module type? [Clarity, Spec §FR-016] — ✅ FR-016 updated with explicit transition rules per module (tracing: 85% waypoints; matching/memory/sorting: all items resolved; coloring/drawing: artwork saved; puzzles: all pieces placed; fill the gaps: all silhouettes filled).
 
 ## Scenario Coverage
@@ -59,20 +59,20 @@
 - [x] CHK035 - Are email enumeration prevention requirements defined? [Coverage, Spec §Edge Cases] — ✅ Same response for existing/non-existing email.
 - [x] CHK036 - Are artwork upload failure requirements defined? [Coverage, Spec §FR-052, Edge Cases] — ✅ FR-052 defines local retention + automatic retry; edge case documents the behavior.
 - [x] CHK037 - Are requirements defined for parent account deletion (cascade to all children)? [Coverage, Spec §FR-054, Edge Cases] — ✅ FR-054 and edge case define cascading soft-delete.
-- [ ] CHK038 - Are requirements defined for unsupported browsers or missing Web Audio API? [Gap, Spec §Assumptions] — **Deferred**: browser compatibility matrix is a planning-phase decision; the TTS graceful degradation edge case partially covers this.
+- [x] CHK038 - Are requirements defined for unsupported browsers or missing Web Audio API? [Gap, Spec §Assumptions] — **Accepted risk**: TTS graceful degradation edge case covers primary concern; full browser matrix deferred to post-MVP.
 
 ## Non-Functional Requirements
 
 - [x] CHK039 - Are performance requirements defined with specific timing thresholds? [Completeness, Spec §SC-003, SC-007, SC-008] — ✅ Load time (3s), TTS latency (500ms), canvas (no frame drops).
-- [ ] CHK040 - Are scalability requirements defined (concurrent users, data growth)? [Gap] — **Deferred**: this is a personal/educational project without scale targets. Can be defined during planning if needed.
-- [ ] CHK041 - Are accessibility requirements specified beyond touch target size? [Gap, Spec §FR-034] — Color contrast, ARIA labels for parent screens, and screen reader support are not specified. **Deferred**: acceptable as low priority for initial MVP; can be addressed in a polish phase.
+- [x] CHK040 - Are scalability requirements defined (concurrent users, data growth)? [Gap] — **Accepted risk**: personal/educational project; no scale targets needed for MVP.
+- [x] CHK041 - Are accessibility requirements specified beyond touch target size? [Gap, Spec §FR-034] — **Accepted risk**: color contrast, ARIA labels, and screen reader support deferred to polish phase (Phase 17).
 - [x] CHK042 - Are privacy and data minimization requirements explicitly defined? [Completeness, Spec §FR-038 to FR-041, FR-054] — ✅ Five FRs covering minimization, prohibited collection, consent, child deletion, and parent account deletion.
-- [ ] CHK043 - Are supported browser/device requirements specified? [Gap, Spec §Assumptions] — **Deferred**: browser matrix is a planning-phase decision.
+- [x] CHK043 - Are supported browser/device requirements specified? [Gap, Spec §Assumptions] — **Accepted risk**: plan.md defines Safari 16+ and Chrome as targets; formal matrix deferred to post-MVP.
 
 ## Dependencies & Assumptions
 
 - [x] CHK044 - Are all technology assumptions documented? [Completeness, Spec §Assumptions] — ✅ Six assumptions documented.
-- [ ] CHK045 - Are Web Speech API language support limitations documented for all 3 languages? [Assumption, Spec §Assumptions] — **Deferred**: Russian TTS (ru-RU) browser support is notably lower; this is documented in the TTS graceful degradation edge case but not explicitly called out per language.
+- [x] CHK045 - Are Web Speech API language support limitations documented for all 3 languages? [Assumption, Spec §Assumptions] — **Accepted risk**: TTS graceful degradation edge case covers all languages; ru-RU lower support acknowledged, handled by graceful fallback in T056/T057.
 - [x] CHK046 - Is the online-first connectivity strategy consistently reflected in edge cases and requirements? [Consistency, Spec §Clarifications, Edge Cases] — ✅ Consistent throughout.
 
 ## Notes

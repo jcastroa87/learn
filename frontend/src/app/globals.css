@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --color-background: #fafafa;
+  --color-foreground: #18181b;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Ensure minimum touch target for all interactive elements */
+button,
+a,
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Disable text selection on interactive canvas areas */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Smooth animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoom-in-95 {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-in {
+  animation: fade-in 0.2s ease-out, zoom-in-95 0.2s ease-out;
+}

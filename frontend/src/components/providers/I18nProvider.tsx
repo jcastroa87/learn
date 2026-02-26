@@ -1,0 +1,16 @@
+"use client";
+
+import { ReactNode, useEffect, useState } from "react";
+import "@/lib/i18n";
+
+export default function I18nProvider({ children }: { children: ReactNode }) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  if (!ready) return null;
+
+  return <>{children}</>;
+}
