@@ -24,19 +24,12 @@ class ArtworkController extends Controller
             ->orderByDesc('created_at')
             ->paginate($perPage);
 
-        return response()->json([
-            'data' => $artworks->map(fn (Artwork $a) => [
-                'id' => $a->id,
-                'activity_type' => $a->activity_type,
-                'thumbnail_url' => Storage::url($a->file_path),
-                'created_at' => $a->created_at->toISOString(),
-            ]),
-            'meta' => [
-                'current_page' => $artworks->currentPage(),
-                'total' => $artworks->total(),
-                'per_page' => $artworks->perPage(),
-            ],
-        ]);
+        return response()->json($artworks->map(fn (Artwork $a) => [
+            'id' => $a->id,
+            'activity_type' => $a->activity_type,
+            'thumbnail_url' => Storage::url($a->file_path),
+            'created_at' => $a->created_at->toISOString(),
+        ]));
     }
 
     public function store(StoreArtworkRequest $request, ChildProfile $child): JsonResponse

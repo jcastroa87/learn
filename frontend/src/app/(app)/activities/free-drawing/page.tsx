@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import { useUndoRedo } from "@/hooks/useUndoRedo";
-import DrawingCanvas, { type DrawingTool } from "@/components/canvas/DrawingCanvas";
+import type { DrawingTool } from "@/components/canvas/DrawingCanvas";
+
+const DrawingCanvas = dynamic(() => import("@/components/canvas/DrawingCanvas"), { ssr: false });
 import ColorPalette from "@/components/activities/ColorPalette";
 import BackgroundSelector from "@/components/activities/BackgroundSelector";
 import Button from "@/components/ui/Button";

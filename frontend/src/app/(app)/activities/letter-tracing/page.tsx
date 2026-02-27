@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import { getLetters } from "@/data/waypoints/letters";
-import TracingCanvas from "@/components/canvas/TracingCanvas";
 import LetterPicker from "@/components/activities/LetterPicker";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+const TracingCanvas = dynamic(() => import("@/components/canvas/TracingCanvas"), { ssr: false });
 
 export default function LetterTracingPage() {
   const { t } = useTranslation("activities");
@@ -59,8 +61,8 @@ export default function LetterTracingPage() {
     startTimer();
   }, [activeLetter, startTimer]);
 
-  const activeWaypoints = useMemo(
-    () => letters.find((l) => l.letter === activeLetter)?.waypoints || [],
+  const activeStrokes = useMemo(
+    () => letters.find((l) => l.letter === activeLetter)?.strokes || [],
     [letters, activeLetter]
   );
 
@@ -115,7 +117,7 @@ export default function LetterTracingPage() {
 
       <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden mb-4">
         <TracingCanvas
-          waypoints={activeWaypoints}
+          strokes={activeStrokes}
           letter={activeLetter}
           canvasSize={Math.min(400, typeof window !== "undefined" ? window.innerWidth - 48 : 400)}
           onComplete={handleComplete}

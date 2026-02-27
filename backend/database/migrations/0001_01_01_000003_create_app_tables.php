@@ -63,11 +63,15 @@ return new class extends Migration
 
         Schema::create('child_cosmetics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('child_profile_id')->constrained()->index();
-            $table->foreignId('cosmetic_item_id')->constrained()->index();
+            $table->unsignedBigInteger('child_profile_id');
+            $table->unsignedBigInteger('cosmetic_item_id');
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('child_profile_id', 'cc_child_fk')->references('id')->on('child_profiles');
+            $table->foreign('cosmetic_item_id', 'cc_cosmetic_fk')->references('id')->on('cosmetic_items');
+            $table->index('child_profile_id');
+            $table->index('cosmetic_item_id');
             $table->unique(['child_profile_id', 'cosmetic_item_id']);
         });
 

@@ -23,21 +23,14 @@ class CosmeticController extends Controller
         $perPage = min((int) $request->query('per_page', 20), 50);
         $items = $query->orderBy('banana_cost')->paginate($perPage);
 
-        return response()->json([
-            'data' => $items->map(fn (CosmeticItem $item) => [
-                'id' => $item->id,
-                'slug' => $item->slug,
-                'category' => $item->category,
-                'name_key' => $item->name_key,
-                'preview_url' => $item->preview_url,
-                'banana_cost' => $item->banana_cost,
-            ]),
-            'meta' => [
-                'current_page' => $items->currentPage(),
-                'total' => $items->total(),
-                'per_page' => $items->perPage(),
-            ],
-        ]);
+        return response()->json($items->map(fn (CosmeticItem $item) => [
+            'id' => $item->id,
+            'slug' => $item->slug,
+            'category' => $item->category,
+            'name_key' => $item->name_key,
+            'preview_url' => $item->preview_url,
+            'banana_cost' => $item->banana_cost,
+        ]));
     }
 
     public function childCosmetics(Request $request, ChildProfile $child): JsonResponse
@@ -47,21 +40,14 @@ class CosmeticController extends Controller
         $perPage = min((int) $request->query('per_page', 50), 100);
         $items = $child->cosmetics()->paginate($perPage);
 
-        return response()->json([
-            'data' => $items->map(fn (CosmeticItem $item) => [
-                'id' => $item->id,
-                'slug' => $item->slug,
-                'category' => $item->category,
-                'name_key' => $item->name_key,
-                'preview_url' => $item->preview_url,
-                'unlocked_at' => $item->pivot->created_at?->toISOString(),
-            ]),
-            'meta' => [
-                'current_page' => $items->currentPage(),
-                'total' => $items->total(),
-                'per_page' => $items->perPage(),
-            ],
-        ]);
+        return response()->json($items->map(fn (CosmeticItem $item) => [
+            'id' => $item->id,
+            'slug' => $item->slug,
+            'category' => $item->category,
+            'name_key' => $item->name_key,
+            'preview_url' => $item->preview_url,
+            'unlocked_at' => $item->pivot->created_at?->toISOString(),
+        ]));
     }
 
     public function purchase(ChildProfile $child, CosmeticItem $cosmetic): JsonResponse

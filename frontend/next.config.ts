@@ -1,40 +1,36 @@
 import type { NextConfig } from "next";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const nextConfig: NextConfig = {
-  rewrites: async () => [
-    {
-      source: "/sanctum/:path*",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/sanctum/:path*`,
-    },
-    {
-      source: "/login",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/login`,
-    },
-    {
-      source: "/logout",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/logout`,
-    },
-    {
-      source: "/register",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/register`,
-    },
-    {
-      source: "/forgot-password",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/forgot-password`,
-    },
-    {
-      source: "/reset-password",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/reset-password`,
-    },
-    {
-      source: "/email/:path*",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/email/:path*`,
-    },
-    {
-      source: "/api/:path*",
-      destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/:path*`,
-    },
-  ],
+  rewrites: async () => ({
+    beforeFiles: [
+      // Auth routes: proxy to Laravel only when Accept: application/json (API calls)
+      ...["/login", "/logout", "/register", "/forgot-password", "/reset-password"].map(
+        (route) => ({
+          source: route,
+          has: [{ type: "header" as const, key: "accept", value: "(.*)application/json(.*)" }],
+          destination: `${API}${route}`,
+        })
+      ),
+      {
+        source: "/sanctum/:path*",
+        destination: `${API}/sanctum/:path*`,
+      },
+      {
+        source: "/email/:path*",
+        has: [{ type: "header" as const, key: "accept", value: "(.*)application/json(.*)" }],
+        destination: `${API}/email/:path*`,
+      },
+    ],
+    afterFiles: [],
+    fallback: [
+      {
+        source: "/api/:path*",
+        destination: `${API}/api/:path*`,
+      },
+    ],
+  }),
 };
 
 export default nextConfig;

@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import numberWaypoints from "@/data/waypoints/numbers";
-import TracingCanvas from "@/components/canvas/TracingCanvas";
 import QuantityVisualization from "@/components/activities/QuantityVisualization";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+const TracingCanvas = dynamic(() => import("@/components/canvas/TracingCanvas"), { ssr: false });
 
 export default function NumberTracingPage() {
   const { t } = useTranslation("activities");
@@ -81,7 +83,7 @@ export default function NumberTracingPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden mb-4">
         {activeWaypoint && (
           <TracingCanvas
-            waypoints={activeWaypoint.waypoints}
+            strokes={activeWaypoint.strokes}
             letter={String(activeNumber)}
             canvasSize={Math.min(380, typeof window !== "undefined" ? window.innerWidth - 48 : 380)}
             onComplete={handleComplete}

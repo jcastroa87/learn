@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import dynamic from "next/dynamic";
+import { Stage, Layer, Rect, Line } from "react-konva";
 import type { UndoAction } from "@/hooks/useUndoRedo";
-
-const Stage = dynamic(() => import("react-konva").then((m) => m.Stage), { ssr: false });
-const Layer = dynamic(() => import("react-konva").then((m) => m.Layer), { ssr: false });
-const Rect = dynamic(() => import("react-konva").then((m) => m.Rect), { ssr: false });
-const Line = dynamic(() => import("react-konva").then((m) => m.Line), { ssr: false });
 
 export type DrawingTool = "brush" | "eraser";
 

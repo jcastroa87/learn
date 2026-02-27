@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
@@ -8,7 +9,9 @@ import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import { useUndoRedo } from "@/hooks/useUndoRedo";
 import { getTemplateById } from "@/data/coloring";
-import ColoringCanvas, { type ToolMode } from "@/components/canvas/ColoringCanvas";
+import type { ToolMode } from "@/components/canvas/ColoringCanvas";
+
+const ColoringCanvas = dynamic(() => import("@/components/canvas/ColoringCanvas"), { ssr: false });
 import ColorPalette from "@/components/activities/ColorPalette";
 import Button from "@/components/ui/Button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";

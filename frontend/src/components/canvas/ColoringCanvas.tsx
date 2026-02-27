@@ -1,14 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import dynamic from "next/dynamic";
+import { Stage, Layer, Path, Line } from "react-konva";
 import type { ColorRegion } from "@/data/coloring";
 import type { UndoAction } from "@/hooks/useUndoRedo";
-
-const Stage = dynamic(() => import("react-konva").then((m) => m.Stage), { ssr: false });
-const Layer = dynamic(() => import("react-konva").then((m) => m.Layer), { ssr: false });
-const Path = dynamic(() => import("react-konva").then((m) => m.Path), { ssr: false });
-const Line = dynamic(() => import("react-konva").then((m) => m.Line), { ssr: false });
 
 export type ToolMode = "fill" | "brush" | "sticker";
 

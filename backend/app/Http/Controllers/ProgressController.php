@@ -32,19 +32,12 @@ class ProgressController extends Controller
         $records = $query->orderByDesc('updated_at')
             ->paginate($request->input('per_page', 50));
 
-        return response()->json([
-            'data' => $records->map(fn (ProgressRecord $r) => [
-                'item_identifier' => $r->item_identifier,
-                'status' => $r->status,
-                'metadata' => $r->metadata,
-                'updated_at' => $r->updated_at,
-            ]),
-            'meta' => [
-                'current_page' => $records->currentPage(),
-                'total' => $records->total(),
-                'per_page' => $records->perPage(),
-            ],
-        ]);
+        return response()->json($records->map(fn (ProgressRecord $r) => [
+            'item_identifier' => $r->item_identifier,
+            'status' => $r->status,
+            'metadata' => $r->metadata,
+            'updated_at' => $r->updated_at,
+        ]));
     }
 
     public function summary(Request $request, ChildProfile $child): JsonResponse
