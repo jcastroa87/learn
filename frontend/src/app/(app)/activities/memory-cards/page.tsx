@@ -8,6 +8,7 @@ import { useAudio } from "@/hooks/useAudio";
 import { MEMORY_MODES } from "@/data/memory";
 import MemoryCardGrid, { type MemoryDifficulty } from "@/components/activities/MemoryCardGrid";
 import MemoryModeSelector from "@/components/activities/MemoryModeSelector";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function MemoryCardsPage() {
@@ -15,7 +16,7 @@ export default function MemoryCardsPage() {
   const { activeChild } = useChildProfile();
   const { recordProgress } = useProgress(activeChild?.id ?? null);
   const { startTimer, getElapsedSeconds } = useActivityTimer();
-  const { success, error: errorSound, speak } = useAudio({
+  const { success, error: errorSound, tts } = useAudio({
     soundEnabled: true,
     language: activeChild?.language || "es",
   });
@@ -24,6 +25,7 @@ export default function MemoryCardsPage() {
   const [difficulty, setDifficulty] = useState<MemoryDifficulty>("easy");
   const [round, setRound] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const [lastTapCount, setLastTapCount] = useState(0);
 
   useState(() => {
@@ -42,10 +44,10 @@ export default function MemoryCardsPage() {
     (ttsText?: string) => {
       success();
       if (ttsText) {
-        setTimeout(() => speak(ttsText), 300);
+        setTimeout(() => tts(ttsText), 300);
       }
     },
-    [success, speak]
+    [success, tts]
   );
 
   const handleMismatch = useCallback(() => {
@@ -55,8 +57,9 @@ export default function MemoryCardsPage() {
   const handleComplete = useCallback(
     async (tapCount: number) => {
       setLastTapCount(tapCount);
-      setShowResult(true);
+      setShowCelebration(true);
       success();
+      setTimeout(() => setShowResult(true), 1500);
 
       if (!activeChild) return;
 
@@ -85,7 +88,9 @@ export default function MemoryCardsPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-3">{t("memory_cards")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-emerald-500 to-green-500 bg-clip-text text-transparent">
+        {t("memory_cards")}
+      </h1>
 
       {!showResult && (
         <>
@@ -117,22 +122,28 @@ export default function MemoryCardsPage() {
       )}
 
       {showResult && (
-        <div className="text-center mt-8">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-indigo-600 mb-2">
+        <div className="text-center mt-8 animate-slide-up">
+          <div className="text-7xl mb-4">🎉</div>
+          <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent mb-2">
             {t("great_job")}
           </h2>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-gray-600 mb-6 text-lg">
             {t("taps_used", { count: lastTapCount })}
           </p>
           <button
             onClick={handlePlayAgain}
-            className="px-6 py-3 bg-indigo-500 text-white rounded-xl font-semibold hover:bg-indigo-600 transition-colors min-h-[44px]"
+            className="px-8 py-4 bg-gradient-to-b from-indigo-400 to-indigo-500 text-white rounded-2xl font-bold hover:from-indigo-500 hover:to-indigo-600 transition-all min-h-[44px] shadow-lg shadow-indigo-500/30 btn-3d text-lg"
           >
             {t("play_again")}
           </button>
         </div>
       )}
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="🎉 Amazing! 🎉"
+        onDone={() => setShowCelebration(false)}
+      />
     </div>
   );
 }

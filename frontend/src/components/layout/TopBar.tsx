@@ -39,21 +39,23 @@ export default function TopBar({
   }
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-zinc-100">
+    <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-xl">
+        <div className="w-11 h-11 rounded-full bg-white/90 flex items-center justify-center text-2xl shadow-md animate-float">
           {AVATAR_EMOJIS[child.avatar] || "🦍"}
         </div>
-        <span className="font-semibold text-zinc-800">{child.name}</span>
+        <span className="font-bold text-white text-lg drop-shadow-sm">
+          {child.name}
+        </span>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <button
           onClick={onBananasTap}
-          className="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-full min-h-[44px]"
+          className="flex items-center gap-1.5 bg-yellow-400 px-4 py-2 rounded-full min-h-[44px] shadow-md btn-3d hover:bg-yellow-300 transition-colors"
         >
           <span className="text-lg">🍌</span>
-          <span className="font-bold text-amber-700">{child.bananas}</span>
+          <span className="font-extrabold text-yellow-900">{child.bananas}</span>
         </button>
 
         <div className="flex gap-1">
@@ -61,10 +63,10 @@ export default function TopBar({
             <button
               key={lang.value}
               onClick={() => handleLanguageSwitch(lang.value)}
-              className={`w-9 h-9 rounded-full flex items-center justify-center text-lg transition-all min-h-[44px] min-w-[44px] ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all min-h-[44px] min-w-[44px] ${
                 i18n.language === lang.value
-                  ? "bg-emerald-100 scale-110"
-                  : "hover:bg-zinc-100"
+                  ? "bg-white/90 scale-110 shadow-md"
+                  : "bg-white/20 hover:bg-white/40"
               }`}
             >
               {lang.flag}

@@ -9,6 +9,7 @@ import { SCENE_THEMES, getScenesByTheme, type SceneTheme, type SceneObject } fro
 import ModeSelector from "@/components/activities/ModeSelector";
 import SceneRenderer from "@/components/activities/SceneRenderer";
 import Button from "@/components/ui/Button";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function FillTheGapsPage() {
@@ -16,7 +17,7 @@ export default function FillTheGapsPage() {
   const { activeChild } = useChildProfile();
   const { recordProgress } = useProgress(activeChild?.id ?? null);
   const { startTimer, getElapsedSeconds } = useActivityTimer();
-  const { success, error: errorSound, speak } = useAudio({
+  const { success, error: errorSound, tts } = useAudio({
     soundEnabled: true,
     language: activeChild?.language || "es",
   });
@@ -26,6 +27,7 @@ export default function FillTheGapsPage() {
   const [completed, setCompleted] = useState(false);
   const [errors, setErrors] = useState(0);
   const [round, setRound] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useState(() => {
     startTimer();
@@ -39,9 +41,9 @@ export default function FillTheGapsPage() {
     (obj: SceneObject) => {
       success();
       const text = obj.ttsText[lang];
-      if (text) setTimeout(() => speak(text), 200);
+      if (text) setTimeout(() => tts(text), 200);
     },
-    [success, speak, lang]
+    [success, tts, lang]
   );
 
   const handleWrongPlace = useCallback(() => {
@@ -51,6 +53,7 @@ export default function FillTheGapsPage() {
 
   const handleComplete = useCallback(async () => {
     setCompleted(true);
+    setShowCelebration(true);
     success();
 
     if (!activeChild || !scene) return;
@@ -74,7 +77,7 @@ export default function FillTheGapsPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-3">{t("fill_the_gaps")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-indigo-400 to-indigo-500 bg-clip-text text-transparent">{t("fill_the_gaps")}</h1>
 
       {!completed && (
         <>
@@ -88,7 +91,7 @@ export default function FillTheGapsPage() {
             }}
           />
 
-          <p className="text-sm text-zinc-500 mt-2 mb-3">
+          <p className="text-sm text-gray-500 font-semibold mt-2 mb-3">
             {scene?.name[lang] || scene?.name.en}
           </p>
 
@@ -108,19 +111,25 @@ export default function FillTheGapsPage() {
       )}
 
       {completed && (
-        <div className="text-center mt-8">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-indigo-600 mb-2">
+        <div className="text-center mt-8 animate-slide-up">
+          <div className="text-7xl mb-4">🎉</div>
+          <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent mb-2">
             {t("great_job")}
           </h2>
           {errors === 0 && (
-            <p className="text-green-600 mb-2">{t("perfect")}</p>
+            <p className="text-green-500 font-bold text-lg mb-2">{t("perfect")}</p>
           )}
           <Button variant="primary" onClick={handleNext}>
             {t("next_scene")}
           </Button>
         </div>
       )}
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="⭐ Wonderful! ⭐"
+        onDone={() => setShowCelebration(false)}
+      />
     </div>
   );
 }

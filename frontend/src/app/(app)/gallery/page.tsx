@@ -9,6 +9,18 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import EmptyState from "@/components/ui/EmptyState";
 import Modal from "@/components/ui/Modal";
 
+const FRAME_COLORS = [
+  "border-pink-300",
+  "border-sky-300",
+  "border-violet-300",
+  "border-amber-300",
+  "border-emerald-300",
+  "border-orange-300",
+  "border-indigo-300",
+  "border-rose-300",
+  "border-teal-300",
+];
+
 interface ArtworkItem {
   id: number;
   activity_type: string;
@@ -33,7 +45,6 @@ export default function GalleryPage() {
     const res = await apiGet<ArtworkItem[]>(`/api/children/${activeChild.id}/artworks?page=${page}&per_page=20`);
     if (res.success) {
       setArtworks(res.data ?? []);
-      // Extract total from the response (paginated endpoint includes meta)
       const raw = res as unknown as { meta?: { total?: number } };
       setTotal(raw.meta?.total ?? res.data?.length ?? 0);
     }
@@ -70,7 +81,9 @@ export default function GalleryPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4 text-center">{t("gallery")}</h1>
+      <h1 className="text-2xl font-extrabold mb-4 text-center bg-gradient-to-r from-sky-500 to-blue-500 bg-clip-text text-transparent">
+        🖼️ {t("gallery")}
+      </h1>
 
       {loading ? (
         <LoadingSpinner className="py-10" />
@@ -82,22 +95,22 @@ export default function GalleryPage() {
         />
       ) : (
         <>
-          <p className="text-sm text-zinc-500 text-center mb-3">
+          <p className="text-sm text-gray-500 font-semibold text-center mb-4">
             {total} / 50 {t("artworks")}
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {artworks.map((artwork) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {artworks.map((artwork, i) => (
               <button
                 key={artwork.id}
                 onClick={() => handleView(artwork)}
-                className="rounded-xl overflow-hidden border border-zinc-100 hover:shadow-md transition-shadow"
+                className={`rounded-3xl overflow-hidden border-3 ${FRAME_COLORS[i % FRAME_COLORS.length]} bg-white hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl`}
               >
                 <img
                   src={artwork.thumbnail_url}
                   alt={artwork.activity_type}
                   className="w-full aspect-square object-cover"
                 />
-                <div className="p-2 text-xs text-zinc-500">
+                <div className="p-2 text-xs text-gray-500 font-semibold">
                   {new Date(artwork.created_at).toLocaleDateString()}
                 </div>
               </button>
@@ -105,21 +118,21 @@ export default function GalleryPage() {
           </div>
 
           {total > 20 && (
-            <div className="flex justify-center gap-2 mt-4">
+            <div className="flex justify-center gap-2 mt-6">
               <Button
                 size="sm"
-                variant="ghost"
+                variant="secondary"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
               >
                 ←
               </Button>
-              <span className="text-sm text-zinc-500 self-center">
+              <span className="text-sm text-gray-500 font-bold self-center px-3">
                 {page} / {Math.ceil(total / 20)}
               </span>
               <Button
                 size="sm"
-                variant="ghost"
+                variant="secondary"
                 disabled={page >= Math.ceil(total / 20)}
                 onClick={() => setPage((p) => p + 1)}
               >
@@ -133,16 +146,15 @@ export default function GalleryPage() {
       <Modal
         open={!!viewing}
         onClose={() => setViewing(null)}
-        title={t("artwork")}
       >
         {viewing && (
           <div className="text-center">
             <img
               src={viewing.file_url || viewing.thumbnail_url}
               alt={viewing.activity_type}
-              className="w-full rounded-xl mb-3"
+              className="w-full rounded-2xl mb-3 shadow-md"
             />
-            <p className="text-sm text-zinc-500 mb-3">
+            <p className="text-sm text-gray-500 font-semibold mb-3">
               {viewing.activity_type} — {new Date(viewing.created_at).toLocaleDateString()}
             </p>
             <Button

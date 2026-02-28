@@ -8,6 +8,7 @@ import { useAudio } from "@/hooks/useAudio";
 import { getMatchPairs, MATCHING_MODES, type MatchingMode } from "@/data/matching";
 import MatchingBoard from "@/components/activities/MatchingBoard";
 import ModeSelector from "@/components/activities/ModeSelector";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Button from "@/components/ui/Button";
 
@@ -24,6 +25,7 @@ export default function MatchingPage() {
   const [mode, setMode] = useState<MatchingMode>("colors");
   const [round, setRound] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const [lastResult, setLastResult] = useState<{
     errors: number;
     bananas: number;
@@ -74,8 +76,9 @@ export default function MatchingPage() {
         errors: errorCount,
         bananas: result?.bananas_awarded || 0,
       });
-      setShowResult(true);
+      setShowCelebration(true);
       success();
+      setTimeout(() => setShowResult(true), 1500);
     },
     [getElapsedSeconds, recordProgress, mode, round, success]
   );
@@ -90,7 +93,7 @@ export default function MatchingPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-3">{t("matching")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent">{t("matching")}</h1>
 
       <ModeSelector
         modes={MATCHING_MODES}
@@ -100,16 +103,16 @@ export default function MatchingPage() {
 
       <div className="mt-6">
         {showResult ? (
-          <div className="text-center py-8">
-            <div className="text-5xl mb-4">🎉</div>
-            <h2 className="text-2xl font-bold mb-2">{t("great_job")}</h2>
+          <div className="text-center py-8 animate-slide-up">
+            <div className="text-7xl mb-4">🎉</div>
+            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent mb-2">{t("great_job")}</h2>
             {lastResult && (
               <>
-                <p className="text-amber-600 text-lg font-semibold mb-4">
-                  {t("bananas_earned", { count: lastResult.bananas })}
+                <p className="text-amber-600 text-xl font-bold mb-4">
+                  🍌 {t("bananas_earned", { count: lastResult.bananas })}
                 </p>
                 {lastResult.errors === 0 && (
-                  <p className="text-emerald-600 text-sm mb-4">
+                  <p className="text-green-500 font-bold text-lg mb-4">
                     Perfect! +3 bonus 🍌
                   </p>
                 )}
@@ -127,6 +130,12 @@ export default function MatchingPage() {
           />
         )}
       </div>
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="🎉 Bravo! 🎉"
+        onDone={() => setShowCelebration(false)}
+      />
     </div>
   );
 }

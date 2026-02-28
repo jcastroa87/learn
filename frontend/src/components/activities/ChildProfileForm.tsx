@@ -27,10 +27,20 @@ const AVATAR_EMOJIS: Record<string, string> = {
   cat: "🐱",
 };
 
-const LANGUAGES: { value: Language; label: string }[] = [
-  { value: "es", label: "spanish" },
-  { value: "en", label: "english" },
-  { value: "ru", label: "russian" },
+const LANGUAGES: { value: Language; label: string; flag: string }[] = [
+  { value: "es", label: "spanish", flag: "🇪🇸" },
+  { value: "en", label: "english", flag: "🇺🇸" },
+  { value: "ru", label: "russian", flag: "🇷🇺" },
+];
+
+const AGE_COLORS = [
+  "from-pink-400 to-rose-500",
+  "from-sky-400 to-blue-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-400 to-orange-500",
+  "from-emerald-400 to-green-500",
+  "from-teal-400 to-cyan-500",
+  "from-indigo-400 to-indigo-500",
 ];
 
 interface ChildProfileFormProps {
@@ -69,33 +79,33 @@ export default function ChildProfileForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-gray-600 mb-1">
           {t("name")}
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-2xl border-2 border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-3 focus:ring-indigo-300 focus:border-indigo-400 transition-all"
           required
           maxLength={100}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-gray-600 mb-2">
           {t("age")}
         </label>
-        <div className="flex items-center gap-3">
-          {[2, 3, 4, 5, 6, 7, 8].map((a) => (
+        <div className="flex items-center gap-2">
+          {[2, 3, 4, 5, 6, 7, 8].map((a, i) => (
             <button
               key={a}
               type="button"
               onClick={() => setAge(a)}
-              className={`w-11 h-11 rounded-full text-lg font-bold transition-colors ${
+              className={`w-12 h-12 rounded-2xl text-lg font-extrabold transition-all ${
                 age === a
-                  ? "bg-emerald-500 text-white"
-                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                  ? `bg-gradient-to-b ${AGE_COLORS[i]} text-white shadow-lg scale-110`
+                  : "bg-gray-100 text-gray-500 hover:bg-gray-200"
               }`}
             >
               {a}
@@ -105,7 +115,7 @@ export default function ChildProfileForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-gray-600 mb-2">
           {t("avatar")}
         </label>
         <div className="flex flex-wrap gap-3">
@@ -114,10 +124,10 @@ export default function ChildProfileForm({
               key={av}
               type="button"
               onClick={() => setAvatar(av)}
-              className={`w-14 h-14 rounded-2xl text-2xl flex items-center justify-center transition-all ${
+              className={`w-16 h-16 rounded-2xl text-3xl flex items-center justify-center transition-all ${
                 avatar === av
-                  ? "bg-emerald-100 ring-2 ring-emerald-500 scale-110"
-                  : "bg-zinc-100 hover:bg-zinc-200"
+                  ? "bg-indigo-100 ring-3 ring-indigo-500 scale-110 shadow-lg"
+                  : "bg-gray-100 hover:bg-gray-200 hover:scale-105"
               }`}
             >
               {AVATAR_EMOJIS[av] || "🦍"}
@@ -127,7 +137,7 @@ export default function ChildProfileForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-gray-600 mb-2">
           {t("language")}
         </label>
         <div className="flex gap-2">
@@ -136,13 +146,13 @@ export default function ChildProfileForm({
               key={lang.value}
               type="button"
               onClick={() => setLanguage(lang.value)}
-              className={`flex-1 py-3 rounded-xl text-sm font-medium transition-colors ${
+              className={`flex-1 py-3 rounded-2xl text-sm font-bold transition-all ${
                 language === lang.value
-                  ? "bg-emerald-500 text-white"
-                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                  ? "bg-gradient-to-b from-indigo-400 to-indigo-500 text-white shadow-lg shadow-indigo-500/30"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
-              {t(lang.label)}
+              <span className="mr-1">{lang.flag}</span> {t(lang.label)}
             </button>
           ))}
         </div>

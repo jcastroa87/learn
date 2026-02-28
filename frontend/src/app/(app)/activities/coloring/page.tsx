@@ -20,7 +20,7 @@ export default function ColoringGalleryPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-3 text-center">{t("coloring")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 text-center bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{t("coloring")}</h1>
 
       <ModeSelector
         modes={COLORING_CATEGORIES}
@@ -33,9 +33,9 @@ export default function ColoringGalleryPage() {
           <Link key={tmpl.id} href={`/activities/coloring/${tmpl.id}`}>
             <Card
               padding="sm"
-              className="text-center hover:shadow-md transition-shadow cursor-pointer"
+              className="text-center hover:shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
-              <div className="w-full aspect-square bg-zinc-50 rounded-xl mb-2 flex items-center justify-center">
+              <div className="w-full aspect-square bg-gray-50 rounded-2xl mb-2 flex items-center justify-center">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   {tmpl.regions.map((r) => (
                     <path
@@ -48,7 +48,7 @@ export default function ColoringGalleryPage() {
                   ))}
                 </svg>
               </div>
-              <p className="text-sm font-medium text-zinc-700">
+              <p className="text-sm font-bold text-gray-700">
                 {tmpl.name[activeChild.language] || tmpl.name.en}
               </p>
             </Card>

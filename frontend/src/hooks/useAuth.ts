@@ -41,10 +41,14 @@ export function useAuth() {
   const login = useCallback(async (email: string, password: string) => {
     const res = await apiPost<User>("/login", { email, password });
     if (res.success) {
-      setUser(res.data);
+      if (res.data) {
+        setUser(res.data);
+      } else {
+        await fetchUser();
+      }
     }
     return res;
-  }, []);
+  }, [fetchUser]);
 
   const logout = useCallback(async () => {
     await apiPost("/logout");

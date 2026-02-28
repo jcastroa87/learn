@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Modal from "@/components/ui/Modal";
+import ParentalGate from "@/components/ui/ParentalGate";
 
 export default function SettingsPage() {
   const { t } = useTranslation("ui");
@@ -14,6 +15,7 @@ export default function SettingsPage() {
   const { user, logout, deleteAccount } = useAuth();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [gateUnlocked, setGateUnlocked] = useState(false);
 
   async function handleLogout() {
     await logout();
@@ -26,19 +28,30 @@ export default function SettingsPage() {
     router.replace("/login");
   }
 
+  if (!gateUnlocked) {
+    return (
+      <ParentalGate
+        onPass={() => setGateUnlocked(true)}
+        onCancel={() => router.back()}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-zinc-50 p-6">
+    <div className="min-h-screen bg-playful p-6">
       <div className="max-w-md mx-auto">
         <div className="flex items-center gap-3 mb-8">
           <Button variant="ghost" size="sm" onClick={() => router.back()}>
-            ← {t("back")}
+            ←
           </Button>
-          <h1 className="text-xl font-bold">{t("settings")}</h1>
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            {t("settings")}
+          </h1>
         </div>
 
         <Card padding="md" className="mb-4">
-          <p className="text-sm text-zinc-500 mb-1">{t("email")}</p>
-          <p className="font-medium">{user?.email}</p>
+          <p className="text-sm text-gray-500 font-semibold mb-1">{t("email")}</p>
+          <p className="font-bold text-gray-800">{user?.email}</p>
         </Card>
 
         <Button
@@ -61,8 +74,11 @@ export default function SettingsPage() {
           open={showDeleteConfirm}
           onClose={() => setShowDeleteConfirm(false)}
         >
-          <h2 className="text-lg font-bold mb-2">{t("delete_account")}</h2>
-          <p className="text-zinc-500 text-sm mb-6">
+          <div className="text-center mb-4">
+            <div className="text-4xl mb-2">⚠️</div>
+            <h2 className="text-xl font-extrabold text-gray-800">{t("delete_account")}</h2>
+          </div>
+          <p className="text-gray-500 text-sm mb-6 text-center">
             {t("delete_account_confirm")}
           </p>
           <div className="flex gap-3">

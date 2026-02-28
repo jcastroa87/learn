@@ -8,6 +8,7 @@ import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import numberWaypoints from "@/data/waypoints/numbers";
 import QuantityVisualization from "@/components/activities/QuantityVisualization";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const TracingCanvas = dynamic(() => import("@/components/canvas/TracingCanvas"), { ssr: false });
@@ -25,6 +26,7 @@ export default function NumberTracingPage() {
   });
 
   const [activeNumber, setActiveNumber] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const completedNumbers = useMemo(
     () =>
@@ -51,6 +53,7 @@ export default function NumberTracingPage() {
 
   const handleComplete = useCallback(async () => {
     success();
+    setShowCelebration(true);
     const elapsed = getElapsedSeconds();
     await recordProgress(
       "number_tracing",
@@ -60,7 +63,7 @@ export default function NumberTracingPage() {
       elapsed
     );
     if (activeNumber < 20) {
-      setTimeout(() => setActiveNumber((n) => n + 1), 800);
+      setTimeout(() => setActiveNumber((n) => n + 1), 1500);
     }
   }, [success, getElapsedSeconds, recordProgress, activeNumber]);
 
@@ -76,11 +79,13 @@ export default function NumberTracingPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-2">{t("number_tracing")}</h1>
+      <h1 className="text-2xl font-extrabold mb-2 bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
+        {t("number_tracing")}
+      </h1>
 
       <QuantityVisualization count={activeNumber} />
 
-      <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden mb-4">
+      <div className="bg-white rounded-3xl shadow-lg shadow-blue-500/10 border-3 border-sky-200 overflow-hidden mb-4">
         {activeWaypoint && (
           <TracingCanvas
             strokes={activeWaypoint.strokes}
@@ -91,23 +96,29 @@ export default function NumberTracingPage() {
         )}
       </div>
 
-      <div className="flex gap-1.5 overflow-x-auto py-2 px-1">
+      <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar">
         {Array.from({ length: 21 }, (_, i) => (
           <button
             key={i}
             onClick={() => handleNumberSelect(i)}
-            className={`w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition-all shrink-0 min-h-[44px] min-w-[44px] ${
+            className={`w-11 h-11 rounded-xl font-bold text-sm flex items-center justify-center transition-all shrink-0 min-h-[44px] min-w-[44px] ${
               completedNumbers.has(i)
-                ? "bg-emerald-500 text-white"
+                ? "bg-gradient-to-b from-green-400 to-green-500 text-white shadow-md shadow-green-500/30"
                 : activeNumber === i
-                ? "bg-zinc-200 ring-2 ring-emerald-400 scale-110"
-                : "bg-zinc-100 text-zinc-600"
+                ? "bg-white ring-3 ring-indigo-400 ring-offset-2 scale-110 shadow-md border-2 border-gray-200"
+                : "bg-white text-gray-500 border-2 border-gray-200 shadow-sm"
             }`}
           >
             {i}
           </button>
         ))}
       </div>
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="⭐ Super! ⭐"
+        onDone={() => setShowCelebration(false)}
+      />
     </div>
   );
 }

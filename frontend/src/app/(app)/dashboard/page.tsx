@@ -8,6 +8,7 @@ import { apiGet } from "@/lib/api";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import ParentalGate from "@/components/ui/ParentalGate";
 import type { DashboardData, ModuleType } from "@/types";
 
 const MODULE_LABELS: Record<ModuleType, string> = {
@@ -20,7 +21,23 @@ const MODULE_LABELS: Record<ModuleType, string> = {
   puzzles: "puzzles",
   fill_the_gaps: "fill_the_gaps",
   sorting: "sorting",
+  abc_puzzles: "abc_puzzles",
+  cooking: "cooking",
 };
+
+const PROGRESS_COLORS = [
+  "from-pink-400 to-rose-500",
+  "from-sky-400 to-blue-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-300 to-yellow-500",
+  "from-orange-400 to-orange-500",
+  "from-emerald-400 to-green-500",
+  "from-teal-400 to-cyan-500",
+  "from-indigo-400 to-indigo-500",
+  "from-rose-400 to-pink-500",
+  "from-fuchsia-400 to-purple-500",
+  "from-red-400 to-orange-500",
+];
 
 export default function DashboardPage() {
   const { t } = useTranslation("ui");
@@ -30,6 +47,7 @@ export default function DashboardPage() {
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [gateUnlocked, setGateUnlocked] = useState(false);
 
   useEffect(() => {
     if (!profileLoading && activeChild) {
@@ -50,32 +68,43 @@ export default function DashboardPage() {
 
   if (profileLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-playful">
         <LoadingSpinner size="lg" />
       </div>
     );
   }
 
+  if (!gateUnlocked) {
+    return (
+      <ParentalGate
+        onPass={() => setGateUnlocked(true)}
+        onCancel={() => router.back()}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-zinc-50 p-6">
+    <div className="min-h-screen bg-playful p-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
           <Button variant="ghost" size="sm" onClick={() => router.back()}>
-            ← {t("back")}
+            ←
           </Button>
-          <h1 className="text-xl font-bold">{t("dashboard")}</h1>
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            {t("dashboard")}
+          </h1>
         </div>
 
         {children.length > 1 && (
-          <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+          <div className="flex gap-2 mb-6 overflow-x-auto pb-2 no-scrollbar">
             {children.map((child) => (
               <button
                 key={child.id}
                 onClick={() => setSelectedChildId(child.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors min-h-[44px] ${
+                className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all min-h-[44px] ${
                   selectedChildId === child.id
-                    ? "bg-emerald-500 text-white"
-                    : "bg-white text-zinc-600 hover:bg-zinc-100"
+                    ? "bg-gradient-to-b from-indigo-400 to-indigo-500 text-white shadow-md shadow-indigo-500/30"
+                    : "bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
                 }`}
               >
                 {child.name}
@@ -88,27 +117,27 @@ export default function DashboardPage() {
           <LoadingSpinner className="py-20" />
         ) : (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <Card padding="md">
-                <p className="text-sm text-zinc-500">{t("bananas")}</p>
-                <p className="text-2xl font-bold">🍌 {data.child.bananas}</p>
+            <div className="grid grid-cols-2 gap-4">
+              <Card padding="md" className="bg-gradient-to-br from-yellow-50 to-amber-50 border-amber-200">
+                <p className="text-sm text-amber-600 font-bold">{t("bananas")}</p>
+                <p className="text-3xl font-extrabold text-amber-700 mt-1">🍌 {data.child.bananas}</p>
               </Card>
-              <Card padding="md">
-                <p className="text-sm text-zinc-500">{t("session_time")}</p>
-                <p className="text-2xl font-bold">
-                  {data.time_spent.today_minutes} {t("minutes")}
+              <Card padding="md" className="bg-gradient-to-br from-blue-50 to-indigo-50 border-indigo-200">
+                <p className="text-sm text-indigo-600 font-bold">{t("session_time")}</p>
+                <p className="text-3xl font-extrabold text-indigo-700 mt-1">
+                  {data.time_spent.today_minutes} <span className="text-lg">{t("minutes")}</span>
                 </p>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-indigo-400 font-semibold mt-1">
                   {data.time_spent.week_minutes} {t("minutes")} / week
                 </p>
               </Card>
             </div>
 
             <Card padding="md">
-              <h2 className="font-semibold mb-3">{tAct("progress")}</h2>
-              <div className="space-y-2">
+              <h2 className="font-extrabold text-gray-800 mb-4">{tAct("progress")}</h2>
+              <div className="space-y-3">
                 {(Object.entries(MODULE_LABELS) as [ModuleType, string][]).map(
-                  ([key, label]) => {
+                  ([key, label], i) => {
                     const mod = data.progress_summary[key];
                     if (!mod) return null;
                     const pct =
@@ -117,16 +146,16 @@ export default function DashboardPage() {
                         : 0;
                     return (
                       <div key={key} className="flex items-center gap-3">
-                        <span className="text-sm w-28 text-zinc-600">
+                        <span className="text-sm w-28 text-gray-600 font-semibold">
                           {tAct(label)}
                         </span>
-                        <div className="flex-1 bg-zinc-100 rounded-full h-2">
+                        <div className="flex-1 bg-gray-100 rounded-full h-3">
                           <div
-                            className="bg-emerald-500 h-2 rounded-full transition-all"
+                            className={`bg-gradient-to-r ${PROGRESS_COLORS[i]} h-3 rounded-full transition-all shadow-sm`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <span className="text-xs text-zinc-400 w-12 text-right">
+                        <span className="text-xs text-gray-500 font-bold w-12 text-right">
                           {mod.completed}/{mod.total}
                         </span>
                       </div>
@@ -138,24 +167,24 @@ export default function DashboardPage() {
 
             {data.recent_activity.length > 0 && (
               <Card padding="md">
-                <h2 className="font-semibold mb-3">Recent Activity</h2>
+                <h2 className="font-extrabold text-gray-800 mb-4">Recent Activity</h2>
                 <div className="space-y-2">
                   {data.recent_activity.slice(0, 10).map((act, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between text-sm"
+                      className="flex items-center justify-between text-sm py-1"
                     >
-                      <span className="text-zinc-600">
+                      <span className="text-gray-600 font-medium">
                         {tAct(act.module_type)} — {act.item_identifier}
                       </span>
                       <span
-                        className={
+                        className={`font-bold px-2 py-0.5 rounded-full text-xs ${
                           act.status === "completed"
-                            ? "text-emerald-600"
-                            : "text-amber-600"
-                        }
+                            ? "bg-green-100 text-green-600"
+                            : "bg-amber-100 text-amber-600"
+                        }`}
                       >
-                        {act.status}
+                        {act.status === "completed" ? "⭐" : "🔄"} {act.status}
                       </span>
                     </div>
                   ))}

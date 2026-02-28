@@ -10,8 +10,8 @@ export default function ActivityLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col">
-      <div className="flex items-center gap-2 px-4 py-2 bg-white border-b border-zinc-100">
+    <div className="min-h-screen bg-playful flex flex-col">
+      <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <Button variant="ghost" size="sm" onClick={() => router.push("/menu")}>
           ← {t("home")}
         </Button>

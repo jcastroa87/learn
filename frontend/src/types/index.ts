@@ -45,7 +45,9 @@ export type ModuleType =
   | "memory_cards"
   | "puzzles"
   | "fill_the_gaps"
-  | "sorting";
+  | "sorting"
+  | "abc_puzzles"
+  | "cooking";
 
 export type ProgressStatus = "attempted" | "completed";
 

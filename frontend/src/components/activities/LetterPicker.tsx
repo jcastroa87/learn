@@ -16,22 +16,28 @@ export default function LetterPicker({
   onSelect,
 }: LetterPickerProps) {
   return (
-    <div className="flex gap-1.5 overflow-x-auto py-2 px-1 no-scrollbar">
+    <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar">
       {letters.map((letter) => {
         const isActive = letter === activeLetter;
         const isCompleted = completedLetters.has(letter);
         const isAttempted = attemptedLetters.has(letter);
 
-        let bgColor = "bg-zinc-100 text-zinc-600";
-        if (isCompleted) bgColor = "bg-emerald-500 text-white";
-        else if (isAttempted) bgColor = "bg-amber-200 text-amber-800";
-        if (isActive) bgColor += " ring-2 ring-emerald-400 scale-110";
+        let style =
+          "bg-white text-gray-500 border-2 border-gray-200 shadow-sm";
+        if (isCompleted)
+          style =
+            "bg-gradient-to-b from-green-400 to-green-500 text-white border-2 border-green-400 shadow-md shadow-green-500/30";
+        else if (isAttempted)
+          style =
+            "bg-gradient-to-b from-amber-300 to-amber-400 text-white border-2 border-amber-400 shadow-md shadow-amber-400/30";
+        if (isActive)
+          style += " ring-3 ring-indigo-400 ring-offset-2 scale-110";
 
         return (
           <button
             key={letter}
             onClick={() => onSelect(letter)}
-            className={`w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition-all shrink-0 min-h-[44px] min-w-[44px] ${bgColor}`}
+            className={`w-11 h-11 rounded-xl font-bold text-sm flex items-center justify-center transition-all shrink-0 min-h-[44px] min-w-[44px] ${style}`}
           >
             {letter}
           </button>

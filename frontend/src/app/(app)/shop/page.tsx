@@ -79,25 +79,27 @@ export default function ShopPage() {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold">{t("shop")}</h1>
-        <span className="text-lg font-semibold bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
+      <div className="flex items-center justify-between mb-5">
+        <h1 className="text-2xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+          🛍️ {t("shop")}
+        </h1>
+        <span className="text-lg font-extrabold bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full shadow-md">
           🍌 {bananas}
         </span>
       </div>
 
-      <div className="flex gap-2 mb-4">
-        {TABS.map((t) => (
+      <div className="flex gap-2 mb-5">
+        {TABS.map((tabItem) => (
           <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors min-h-[44px] ${
-              tab === t.id
-                ? "bg-indigo-500 text-white"
-                : "bg-zinc-100 text-zinc-600"
+            key={tabItem.id}
+            onClick={() => setTab(tabItem.id)}
+            className={`flex-1 py-3 rounded-2xl text-sm font-bold transition-all min-h-[44px] ${
+              tab === tabItem.id
+                ? "bg-gradient-to-b from-indigo-400 to-indigo-500 text-white shadow-lg shadow-indigo-500/30"
+                : "bg-white text-gray-600 border-2 border-gray-200 hover:border-indigo-300"
             }`}
           >
-            {t.icon} {t.label}
+            {tabItem.icon} {tabItem.label}
           </button>
         ))}
       </div>
@@ -105,7 +107,7 @@ export default function ShopPage() {
       {loading ? (
         <LoadingSpinner className="py-10" />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {allItems.map((item) => (
             <CosmeticItemCard
               key={item.id}
@@ -123,19 +125,18 @@ export default function ShopPage() {
       <Modal
         open={!!purchasing}
         onClose={() => setPurchasing(null)}
-        title={t("confirm_purchase")}
       >
         {purchasing && (
           <div className="text-center">
-            <div className="text-6xl mb-3">
+            <div className="text-7xl mb-4 animate-bounce-in">
               {purchasing.preview_url || previewMap[purchasing.category] || "🎁"}
             </div>
-            <p className="text-zinc-700 mb-1">{purchasing.name_key}</p>
-            <p className="text-amber-600 font-semibold mb-4">
+            <p className="text-gray-800 font-bold text-lg mb-1">{purchasing.name_key}</p>
+            <p className="text-amber-600 font-extrabold text-xl mb-6">
               🍌 {purchasing.banana_cost}
             </p>
-            <div className="flex gap-2 justify-center">
-              <Button variant="ghost" onClick={() => setPurchasing(null)}>
+            <div className="flex gap-3 justify-center">
+              <Button variant="secondary" onClick={() => setPurchasing(null)}>
                 {t("cancel")}
               </Button>
               <Button

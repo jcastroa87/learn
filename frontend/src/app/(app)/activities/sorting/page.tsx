@@ -14,6 +14,7 @@ import {
 import ModeSelector from "@/components/activities/ModeSelector";
 import CategoryBin from "@/components/activities/CategoryBin";
 import Button from "@/components/ui/Button";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const SNAP_THRESHOLD = 50;
@@ -23,7 +24,7 @@ export default function SortingPage() {
   const { activeChild } = useChildProfile();
   const { recordProgress } = useProgress(activeChild?.id ?? null);
   const { startTimer, getElapsedSeconds } = useActivityTimer();
-  const { success, error: errorSound, speak } = useAudio({
+  const { success, error: errorSound, tts } = useAudio({
     soundEnabled: true,
     language: activeChild?.language || "es",
   });
@@ -41,6 +42,7 @@ export default function SortingPage() {
   const dragOffset = useRef({ x: 0, y: 0 });
   const binRefs = useRef<Record<string, DOMRect>>({});
   const [key, setKey] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const rounds = getRoundsByCategory(category);
   const round = rounds[roundIndex % rounds.length];
@@ -128,7 +130,7 @@ export default function SortingPage() {
         // Correct!
         success();
         const text = item.ttsText[lang];
-        if (text) setTimeout(() => speak(text), 200);
+        if (text) setTimeout(() => tts(text), 200);
 
         const newRemaining = remaining.filter((i) => i.id !== item.id);
         setRemaining(newRemaining);
@@ -139,6 +141,7 @@ export default function SortingPage() {
 
         if (newRemaining.length === 0) {
           setCompleted(true);
+          setShowCelebration(true);
           if (activeChild) {
             const elapsed = getElapsedSeconds();
             recordProgress("sorting", round.id, "completed", {
@@ -156,7 +159,7 @@ export default function SortingPage() {
 
     setDragging(null);
     setOverBin(null);
-  }, [dragging, remaining, overBin, round, lang, errors, category, activeChild, success, errorSound, speak, getElapsedSeconds, recordProgress]);
+  }, [dragging, remaining, overBin, round, lang, errors, category, activeChild, success, errorSound, tts, getElapsedSeconds, recordProgress]);
 
   const handleNextRound = () => {
     setRoundIndex((i) => i + 1);
@@ -168,7 +171,9 @@ export default function SortingPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-3">{t("sorting")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
+        {t("sorting")}
+      </h1>
 
       <ModeSelector
         modes={SORTING_CATEGORIES as unknown as string[]}
@@ -181,7 +186,7 @@ export default function SortingPage() {
         }}
       />
 
-      <p className="text-sm text-zinc-500 mt-2 mb-3">
+      <p className="text-sm text-gray-500 font-semibold mt-2 mb-3">
         {round?.name[lang] || round?.name.en}
       </p>
 
@@ -217,10 +222,10 @@ export default function SortingPage() {
               <div
                 key={item.id}
                 onPointerDown={(e) => handlePointerDown(e, item)}
-                className={`w-14 h-14 flex items-center justify-center rounded-xl border-2 text-2xl select-none ${
+                className={`w-14 h-14 flex items-center justify-center rounded-2xl border-2 text-2xl select-none transition-all ${
                   dragging === item.id
                     ? "opacity-30"
-                    : "border-zinc-200 bg-white shadow-sm cursor-grab"
+                    : "border-gray-200 bg-white shadow-md cursor-grab hover:scale-110"
                 }`}
                 style={{ touchAction: "none" }}
               >
@@ -232,7 +237,7 @@ export default function SortingPage() {
           {/* Dragging ghost */}
           {dragging && (
             <div
-              className="absolute w-14 h-14 flex items-center justify-center rounded-xl border-2 border-indigo-400 bg-white shadow-lg text-2xl z-50 pointer-events-none"
+              className="absolute w-14 h-14 flex items-center justify-center rounded-2xl border-3 border-indigo-400 bg-white shadow-xl text-2xl z-50 pointer-events-none scale-110"
               style={{ left: dragPos.x, top: dragPos.y }}
             >
               {remaining.find((i) => i.id === dragging)?.content}
@@ -242,19 +247,25 @@ export default function SortingPage() {
       )}
 
       {completed && (
-        <div className="text-center mt-8">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-indigo-600 mb-2">
+        <div className="text-center mt-8 animate-slide-up">
+          <div className="text-7xl mb-4">🎉</div>
+          <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent mb-2">
             {t("great_job")}
           </h2>
           {errors === 0 && (
-            <p className="text-green-600 font-medium mb-2">{t("perfect")}</p>
+            <p className="text-green-500 font-bold text-lg mb-2">{t("perfect")}</p>
           )}
           <Button variant="primary" onClick={handleNextRound}>
             {t("next_round")}
           </Button>
         </div>
       )}
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="🎉 Awesome! 🎉"
+        onDone={() => setShowCelebration(false)}
+      />
     </div>
   );
 }

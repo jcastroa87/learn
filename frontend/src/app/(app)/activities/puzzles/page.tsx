@@ -21,7 +21,7 @@ export default function PuzzlesGalleryPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-3 text-center">{t("puzzles")}</h1>
+      <h1 className="text-2xl font-extrabold mb-3 text-center bg-gradient-to-r from-teal-400 to-cyan-500 bg-clip-text text-transparent">{t("puzzles")}</h1>
 
       <ModeSelector
         modes={PUZZLE_CATEGORIES as unknown as string[]}
@@ -34,14 +34,14 @@ export default function PuzzlesGalleryPage() {
           <Link key={puzzle.id} href={`/activities/puzzles/${puzzle.id}`}>
             <Card
               padding="sm"
-              className="text-center hover:shadow-md transition-shadow cursor-pointer"
+              className="text-center hover:shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
-              <div className="w-full aspect-square rounded-xl mb-2 flex items-center justify-center text-5xl"
+              <div className="w-full aspect-square rounded-2xl mb-2 flex items-center justify-center text-5xl"
                 style={{ backgroundColor: puzzle.gridColor + "44" }}
               >
                 {puzzle.image}
               </div>
-              <p className="text-sm font-medium text-zinc-700">
+              <p className="text-sm font-bold text-gray-700">
                 {puzzle.name[lang] || puzzle.name.en}
               </p>
             </Card>

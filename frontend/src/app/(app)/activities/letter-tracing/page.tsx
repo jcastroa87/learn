@@ -8,6 +8,7 @@ import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
 import { getLetters } from "@/data/waypoints/letters";
 import LetterPicker from "@/components/activities/LetterPicker";
+import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const TracingCanvas = dynamic(() => import("@/components/canvas/TracingCanvas"), { ssr: false });
@@ -30,6 +31,7 @@ export default function LetterTracingPage() {
   );
 
   const [activeLetter, setActiveLetter] = useState(letters[0]?.letter || "A");
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const completedLetters = useMemo(
     () =>
@@ -68,6 +70,7 @@ export default function LetterTracingPage() {
 
   const handleComplete = useCallback(async () => {
     success();
+    setShowCelebration(true);
     const elapsed = getElapsedSeconds();
     await recordProgress(
       "letter_tracing",
@@ -79,7 +82,7 @@ export default function LetterTracingPage() {
     // Auto-advance to next letter
     const idx = letters.findIndex((l) => l.letter === activeLetter);
     if (idx < letters.length - 1) {
-      setTimeout(() => setActiveLetter(letters[idx + 1].letter), 800);
+      setTimeout(() => setActiveLetter(letters[idx + 1].letter), 1500);
     }
   }, [
     success,
@@ -113,9 +116,11 @@ export default function LetterTracingPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-4">{t("letter_tracing")}</h1>
+      <h1 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
+        {t("letter_tracing")}
+      </h1>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden mb-4">
+      <div className="bg-white rounded-3xl shadow-lg shadow-pink-500/10 border-3 border-pink-200 overflow-hidden mb-4">
         <TracingCanvas
           strokes={activeStrokes}
           letter={activeLetter}
@@ -130,6 +135,12 @@ export default function LetterTracingPage() {
         completedLetters={completedLetters}
         attemptedLetters={attemptedLetters}
         onSelect={handleLetterSelect}
+      />
+
+      <CelebrationOverlay
+        show={showCelebration}
+        message="⭐ Great job! ⭐"
+        onDone={() => setShowCelebration(false)}
       />
     </div>
   );

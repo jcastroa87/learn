@@ -22,6 +22,14 @@ const AVATAR_EMOJIS: Record<string, string> = {
   cat: "🐱",
 };
 
+const CARD_COLORS = [
+  "from-pink-400 to-rose-500",
+  "from-sky-400 to-blue-500",
+  "from-violet-400 to-purple-500",
+  "from-emerald-400 to-green-500",
+  "from-amber-400 to-orange-500",
+];
+
 export default function ProfilesPage() {
   const { t } = useTranslation("ui");
   const router = useRouter();
@@ -30,7 +38,7 @@ export default function ProfilesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-playful">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -42,14 +50,19 @@ export default function ProfilesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 p-6">
+    <div className="min-h-screen bg-playful p-6">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">{t("profiles")}</h1>
+          <div>
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              {t("profiles")}
+            </h1>
+            <p className="text-gray-500 font-medium mt-1">Who&apos;s playing today?</p>
+          </div>
           <div className="flex gap-2">
             <Link href="/dashboard">
               <Button variant="ghost" size="sm">
-                {t("dashboard")}
+                📊
               </Button>
             </Link>
             <Link href="/settings">
@@ -60,41 +73,44 @@ export default function ProfilesPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-          {children.map((child) => (
-            <Card
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 mb-6">
+          {children.map((child, i) => (
+            <div
               key={child.id}
-              padding="md"
-              className="cursor-pointer hover:shadow-md transition-shadow text-center"
+              className={`bg-gradient-to-br ${CARD_COLORS[i % CARD_COLORS.length]} rounded-3xl p-6 text-center cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg btn-3d animate-slide-up`}
+              style={{ animationDelay: `${i * 100}ms` }}
               onClick={() => handleSelectChild(child)}
             >
-              <div className="text-4xl mb-2">
+              <div className="text-5xl mb-3 animate-float">
                 {AVATAR_EMOJIS[child.avatar] || "🦍"}
               </div>
-              <p className="font-semibold text-lg">{child.name}</p>
-              <p className="text-sm text-zinc-500">
+              <p className="font-extrabold text-lg text-white drop-shadow-sm">{child.name}</p>
+              <p className="text-sm text-white/80 font-semibold">
                 {child.age} {t("age").toLowerCase()}
               </p>
-              <p className="text-sm text-amber-600 mt-1">
-                🍌 {child.bananas}
-              </p>
-            </Card>
+              <div className="mt-2 inline-flex items-center gap-1 bg-white/20 rounded-full px-3 py-1">
+                <span className="text-sm">🍌</span>
+                <span className="text-sm font-bold text-white">{child.bananas}</span>
+              </div>
+            </div>
           ))}
 
           {children.length < 5 && (
-            <Card
-              padding="md"
-              className="cursor-pointer hover:shadow-md transition-shadow text-center border-dashed border-2 border-zinc-200 flex flex-col items-center justify-center"
+            <div
+              className="rounded-3xl p-6 text-center cursor-pointer hover:scale-105 active:scale-95 transition-all border-3 border-dashed border-gray-300 bg-white/50 flex flex-col items-center justify-center shadow-md animate-slide-up"
+              style={{ animationDelay: `${children.length * 100}ms` }}
               onClick={() => setShowCreate(true)}
             >
-              <div className="text-4xl mb-2 text-zinc-300">+</div>
-              <p className="text-zinc-400 font-medium">{t("add_profile")}</p>
-            </Card>
+              <div className="text-5xl mb-3 text-gray-300">+</div>
+              <p className="text-gray-400 font-bold">{t("add_profile")}</p>
+            </div>
           )}
         </div>
 
         <Modal open={showCreate} onClose={() => setShowCreate(false)}>
-          <h2 className="text-lg font-bold mb-4">{t("add_profile")}</h2>
+          <h2 className="text-xl font-extrabold mb-4 bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            {t("add_profile")}
+          </h2>
           <ChildProfileForm
             onSubmit={async (data) => {
               await createChild(data);

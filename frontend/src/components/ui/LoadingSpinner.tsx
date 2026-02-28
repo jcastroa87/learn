@@ -11,6 +11,8 @@ const sizeClasses = {
   lg: "h-12 w-12",
 };
 
+const COLORS = ["#818cf8", "#f472b6", "#fb923c", "#34d399"];
+
 export default function LoadingSpinner({
   size = "md",
   className = "",
@@ -18,23 +20,32 @@ export default function LoadingSpinner({
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <svg
-        className={`animate-spin text-emerald-500 ${sizeClasses[size]}`}
+        className={`animate-spin ${sizeClasses[size]}`}
         viewBox="0 0 24 24"
         fill="none"
       >
         <circle
-          className="opacity-25"
           cx="12"
           cy="12"
           r="10"
-          stroke="currentColor"
+          stroke="#e5e7eb"
           strokeWidth="4"
         />
         <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          fill="none"
+          stroke="url(#spinner-gradient)"
+          strokeWidth="4"
+          strokeLinecap="round"
+          d="M4 12a8 8 0 018-8"
         />
+        <defs>
+          <linearGradient id="spinner-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={COLORS[0]} />
+            <stop offset="33%" stopColor={COLORS[1]} />
+            <stop offset="66%" stopColor={COLORS[2]} />
+            <stop offset="100%" stopColor={COLORS[3]} />
+          </linearGradient>
+        </defs>
       </svg>
     </div>
   );

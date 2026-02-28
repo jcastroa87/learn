@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${nunito.variable} font-sans antialiased bg-zinc-50`}>
+      <body className={`${nunito.variable} font-sans antialiased bg-playful`}>
         <I18nProvider>{children}</I18nProvider>
       </body>
     </html>

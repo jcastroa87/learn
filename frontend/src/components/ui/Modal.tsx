@@ -31,7 +31,7 @@ export default function Modal({ open, onClose, children }: ModalProps) {
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6 animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full mx-4 p-6 animate-slide-up">
         {children}
       </div>
     </div>

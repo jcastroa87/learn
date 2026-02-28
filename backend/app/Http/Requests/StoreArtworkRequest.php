@@ -15,7 +15,7 @@ class StoreArtworkRequest extends FormRequest
     {
         return [
             'file' => ['required', 'file', 'mimes:webp,png', 'max:5120'],
-            'activity_type' => ['required', 'string', 'in:coloring,free_drawing'],
+            'activity_type' => ['required', 'string', 'in:coloring,free_drawing,abc_puzzles,cooking'],
         ];
     }
 }

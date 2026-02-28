@@ -50,6 +50,7 @@ class ProgressController extends Controller
             'letter_tracing', 'number_tracing', 'matching',
             'coloring', 'free_drawing', 'memory_cards',
             'puzzles', 'fill_the_gaps', 'sorting',
+            'abc_puzzles', 'cooking',
         ];
 
         $modules = [];

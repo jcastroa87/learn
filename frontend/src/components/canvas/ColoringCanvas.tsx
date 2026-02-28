@@ -15,7 +15,7 @@ interface ColoringCanvasProps {
   brushSize: number;
   rainbow: boolean;
   onAction?: (action: UndoAction) => void;
-  stageRef?: React.RefObject<ReturnType<typeof import("konva")["default"]["Stage"]> | null>;
+  stageRef?: React.RefObject<InstanceType<typeof import("konva")["default"]["Stage"]> | null>;
 }
 
 const RAINBOW = ["#FF0000", "#FF7700", "#FFFF00", "#00FF00", "#0077FF", "#8800FF", "#FF00FF"];

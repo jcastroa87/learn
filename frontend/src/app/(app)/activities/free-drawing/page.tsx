@@ -87,9 +87,9 @@ export default function FreeDrawingPage() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h2 className="text-lg font-semibold mb-3">{t("free_drawing")}</h2>
+      <h2 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 to-orange-500 bg-clip-text text-transparent">{t("free_drawing")}</h2>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 overflow-hidden mb-3">
+      <div className="bg-white rounded-3xl shadow-lg shadow-orange-500/10 border-3 border-orange-200 overflow-hidden mb-3">
         <DrawingCanvas
           canvasSize={canvasSize}
           activeColor={activeColor}

@@ -20,13 +20,14 @@ export default function ArtworkLimitDialog({
   const { t } = useTranslation("ui");
 
   return (
-    <Modal open={open} onClose={onCancel} title={t("artwork_limit_title")}>
+    <Modal open={open} onClose={onCancel}>
       <div className="text-center">
         <div className="text-5xl mb-3">🎨</div>
-        <p className="text-zinc-700 mb-2">
+        <h2 className="text-xl font-extrabold text-gray-800 mb-3">{t("artwork_limit_title")}</h2>
+        <p className="text-gray-700 mb-2">
           {t("artwork_limit_message", { count: currentCount, max: 50 })}
         </p>
-        <p className="text-sm text-zinc-500 mb-4">
+        <p className="text-sm text-gray-500 mb-4">
           {t("artwork_limit_replace")}
         </p>
         <div className="flex gap-2 justify-center">

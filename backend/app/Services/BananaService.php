@@ -16,6 +16,8 @@ class BananaService
         'puzzles' => 5,
         'fill_the_gaps' => 5,
         'sorting' => 5,
+        'abc_puzzles' => 5,
+        'cooking' => 5,
     ];
 
     private const PUZZLE_DIFFICULTY_AWARDS = [

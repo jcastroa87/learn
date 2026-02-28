@@ -56,10 +56,26 @@ export async function api<T>(
     headers: requestHeaders,
     body: fetchBody,
     credentials: "include",
+    redirect: "manual",
   });
 
-  const data: ApiResponse<T> = await response.json();
-  return data;
+  // Handle opaque redirects (302s) — treat as success since Laravel
+  // redirects when already authenticated or after successful auth
+  if (response.type === "opaqueredirect" || response.status === 0) {
+    return { success: true, data: null as T, error: null };
+  }
+
+  const text = await response.text();
+  if (!text) {
+    return { success: response.ok, data: null as T, error: response.ok ? null : "Empty response" };
+  }
+
+  try {
+    const data: ApiResponse<T> = JSON.parse(text);
+    return data;
+  } catch {
+    return { success: false, data: null as T, error: "Invalid response" };
+  }
 }
 
 export async function apiGet<T>(url: string): Promise<ApiResponse<T>> {

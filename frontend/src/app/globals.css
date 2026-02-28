@@ -2,8 +2,8 @@
 
 @theme inline {
   --font-sans: var(--font-nunito), system-ui, sans-serif;
-  --color-background: #fafafa;
-  --color-foreground: #18181b;
+  --color-background: #FFF8F0;
+  --color-foreground: #1a1a2e;
 }
 
 body {
@@ -26,6 +26,20 @@ a,
   -webkit-touch-callout: none;
 }
 
+/* Playful background pattern */
+.bg-playful {
+  background-color: #FFF8F0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255, 182, 72, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(129, 140, 248, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(52, 211, 153, 0.08) 0%, transparent 50%);
+}
+
+/* Auth background with gradient */
+.bg-auth {
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 30%, #f472b6 60%, #fb923c 100%);
+}
+
 /* Smooth animations */
 @keyframes fade-in {
   from { opacity: 0; }
@@ -37,6 +51,86 @@ a,
   to { transform: scale(1); opacity: 1; }
 }
 
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes star-burst {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 .animate-in {
   animation: fade-in 0.2s ease-out, zoom-in-95 0.2s ease-out;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pop {
+  animation: pop 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
+
+/* 3D button press effect */
+.btn-3d {
+  box-shadow: 0 4px 0 0 rgba(0,0,0,0.2);
+  transition: all 0.1s ease;
+}
+
+.btn-3d:active {
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.2);
+  transform: translateY(3px);
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

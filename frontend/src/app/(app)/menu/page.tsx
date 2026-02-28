@@ -13,6 +13,7 @@ import type { Language, ModuleType } from "@/types";
 const MODULES: ModuleType[] = [
   "letter_tracing",
   "number_tracing",
+  "abc_puzzles",
   "matching",
   "coloring",
   "free_drawing",
@@ -20,6 +21,7 @@ const MODULES: ModuleType[] = [
   "puzzles",
   "fill_the_gaps",
   "sorting",
+  "cooking",
 ];
 
 export default function MenuPage() {
@@ -50,33 +52,33 @@ export default function MenuPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col">
+    <div className="min-h-screen bg-playful flex flex-col">
       <TopBar
         child={activeChild}
         onLanguageChange={handleLanguageChange}
         onBananasTap={() => router.push("/shop")}
       />
 
-      <main className="flex-1 p-4 max-w-4xl mx-auto w-full">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+      <main className="flex-1 p-4 max-w-4xl mx-auto w-full pb-24">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {MODULES.map((module) => (
             <ActivityCard key={module} module={module} />
           ))}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <Link href="/shop" className="flex-1">
-            <div className="bg-gradient-to-b from-amber-100 to-amber-50 rounded-2xl p-4 text-center hover:shadow-md transition-all">
-              <span className="text-2xl">🛍️</span>
-              <p className="font-semibold text-sm text-zinc-700 mt-1">
+            <div className="bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl p-5 text-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-orange-500/20 btn-3d">
+              <span className="text-3xl drop-shadow-md">🛍️</span>
+              <p className="font-bold text-sm text-white mt-1 drop-shadow-sm">
                 {t("shop")}
               </p>
             </div>
           </Link>
           <Link href="/gallery" className="flex-1">
-            <div className="bg-gradient-to-b from-sky-100 to-sky-50 rounded-2xl p-4 text-center hover:shadow-md transition-all">
-              <span className="text-2xl">🖼️</span>
-              <p className="font-semibold text-sm text-zinc-700 mt-1">
+            <div className="bg-gradient-to-br from-sky-400 to-blue-500 rounded-3xl p-5 text-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/20 btn-3d">
+              <span className="text-3xl drop-shadow-md">🖼️</span>
+              <p className="font-bold text-sm text-white mt-1 drop-shadow-sm">
                 {t("gallery")}
               </p>
             </div>
@@ -84,18 +86,35 @@ export default function MenuPage() {
         </div>
       </main>
 
-      <nav className="flex justify-center gap-4 py-3 border-t border-zinc-100 bg-white">
+      {/* Bottom Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-40">
+        <Link
+          href="/menu"
+          className="flex flex-col items-center gap-0.5 min-h-[44px] min-w-[44px] justify-center px-4"
+        >
+          <span className="text-2xl">🏠</span>
+          <span className="text-xs font-bold text-indigo-600">{t("home")}</span>
+        </Link>
         <Link
           href="/profiles"
-          className="text-sm text-zinc-500 hover:text-zinc-700 min-h-[44px] flex items-center px-3"
+          className="flex flex-col items-center gap-0.5 min-h-[44px] min-w-[44px] justify-center px-4"
         >
-          {t("profiles")}
+          <span className="text-2xl">👦</span>
+          <span className="text-xs font-semibold text-gray-500">{t("profiles")}</span>
         </Link>
         <Link
           href="/dashboard"
-          className="text-sm text-zinc-500 hover:text-zinc-700 min-h-[44px] flex items-center px-3"
+          className="flex flex-col items-center gap-0.5 min-h-[44px] min-w-[44px] justify-center px-4"
         >
-          {t("dashboard")}
+          <span className="text-2xl">📊</span>
+          <span className="text-xs font-semibold text-gray-500">{t("dashboard")}</span>
+        </Link>
+        <Link
+          href="/settings"
+          className="flex flex-col items-center gap-0.5 min-h-[44px] min-w-[44px] justify-center px-4"
+        >
+          <span className="text-2xl">⚙️</span>
+          <span className="text-xs font-semibold text-gray-500">{t("settings")}</span>
         </Link>
       </nav>
     </div>

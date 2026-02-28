@@ -10,17 +10,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700",
+    "bg-gradient-to-b from-green-400 to-green-500 text-white hover:from-green-500 hover:to-green-600 active:from-green-600 active:to-green-700 btn-3d",
   secondary:
-    "bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 active:bg-zinc-100",
-  danger: "bg-red-500 text-white hover:bg-red-600 active:bg-red-700",
-  ghost: "text-zinc-600 hover:bg-zinc-100 active:bg-zinc-200",
+    "bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50 active:bg-gray-100 btn-3d",
+  danger:
+    "bg-gradient-to-b from-red-400 to-red-500 text-white hover:from-red-500 hover:to-red-600 active:from-red-600 active:to-red-700 btn-3d",
+  ghost:
+    "text-gray-600 hover:bg-white/60 active:bg-white/80",
 };
 
 const sizes = {
   sm: "px-3 py-1.5 text-sm min-h-[44px] min-w-[44px]",
-  md: "px-4 py-2.5 text-base min-h-[44px] min-w-[44px]",
-  lg: "px-6 py-3 text-lg min-h-[44px] min-w-[44px]",
+  md: "px-5 py-3 text-base min-h-[44px] min-w-[44px]",
+  lg: "px-7 py-4 text-lg min-h-[44px] min-w-[44px]",
 };
 
 export default function Button({
@@ -34,7 +36,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-2xl font-bold transition-all focus:outline-none focus:ring-3 focus:ring-indigo-300 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={disabled || loading}
       {...props}
     >
