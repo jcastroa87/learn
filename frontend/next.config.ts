@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   rewrites: async () => ({
     beforeFiles: [
       // Auth routes: proxy to Laravel only when Accept: application/json (API calls)
