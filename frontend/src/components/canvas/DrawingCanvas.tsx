@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Stage, Layer, Rect, Line } from "react-konva";
 import type { UndoAction } from "@/hooks/useUndoRedo";
 
@@ -15,6 +15,7 @@ interface DrawingCanvasProps {
   backgroundColor: string;
   onAction?: (action: UndoAction) => void;
   stageRef?: React.RefObject<InstanceType<typeof import("konva")["default"]["Stage"]> | null>;
+  undoTrigger?: number;
 }
 
 const RAINBOW = ["#FF0000", "#FF7700", "#FFFF00", "#00FF00", "#0077FF", "#8800FF", "#FF00FF"];
@@ -28,11 +29,20 @@ export default function DrawingCanvas({
   backgroundColor,
   onAction,
   stageRef,
+  undoTrigger = 0,
 }: DrawingCanvasProps) {
   const [strokes, setStrokes] = useState<{ points: number[]; color: string; width: number; eraser: boolean }[]>([]);
   const [currentStroke, setCurrentStroke] = useState<number[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const colorIdx = useRef(0);
+  const prevUndoTrigger = useRef(0);
+
+  useEffect(() => {
+    if (undoTrigger > prevUndoTrigger.current) {
+      setStrokes((prev) => prev.slice(0, -1));
+      prevUndoTrigger.current = undoTrigger;
+    }
+  }, [undoTrigger]);
 
   const handlePointerDown = useCallback(
     (e: { evt: { offsetX: number; offsetY: number } }) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { MatchPair } from "@/data/matching";
 
 interface MatchingBoardProps {
@@ -24,9 +24,10 @@ export default function MatchingBoard({
   const [errorCount, setErrorCount] = useState(0);
   const [animating, setAnimating] = useState(false);
 
-  const shuffledRight = useState(() =>
-    [...pairs].sort(() => Math.random() - 0.5)
-  )[0];
+  const shuffledRight = useMemo(
+    () => [...pairs].sort(() => Math.random() - 0.5),
+    [pairs]
+  );
 
   const handleLeftTap = useCallback(
     (id: string) => {
@@ -112,7 +113,7 @@ export default function MatchingBoard({
             key={`l-${pair.id}`}
             onClick={() => handleLeftTap(pair.id)}
             disabled={matchedIds.has(pair.id)}
-            className={`w-20 h-16 rounded-xl text-2xl flex items-center justify-center transition-all min-h-[44px] ${
+            className={`w-20 h-16 rounded-xl text-3xl font-bold flex items-center justify-center transition-all min-h-[44px] ${
               matchedIds.has(pair.id)
                 ? "bg-emerald-100 text-emerald-600 opacity-60"
                 : selectedLeft === pair.id

@@ -263,7 +263,7 @@ export default function SortingPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="🎉 Awesome! 🎉"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

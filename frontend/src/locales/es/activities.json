@@ -46,5 +46,11 @@
   "taps_used": "{{count}} toques usados",
   "perfect": "¡Perfecto! Sin errores",
   "next_scene": "Siguiente escena",
-  "next_round": "Siguiente ronda"
+  "next_round": "Siguiente ronda",
+  "perfect_bonus": "¡Perfecto! +3 bonus",
+  "perfect_chef": "¡Chef perfecto!",
+  "pick_a_recipe": "¡Elige una receta!",
+  "is_ready": "¡está listo!",
+  "again": "Otra vez",
+  "new_recipe": "Nueva receta"
 }

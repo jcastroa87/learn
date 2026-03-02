@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { apiGet, apiPost } from "@/lib/api";
@@ -12,14 +13,15 @@ import type { CosmeticItem } from "@/types";
 
 type ShopTab = "avatar" | "sticker" | "background";
 
-const TABS: { id: ShopTab; label: string; icon: string }[] = [
-  { id: "avatar", label: "Avatars", icon: "👤" },
-  { id: "sticker", label: "Stickers", icon: "⭐" },
-  { id: "background", label: "Backgrounds", icon: "🖼️" },
+const TABS: { id: ShopTab; labelKey: string; icon: string }[] = [
+  { id: "avatar", labelKey: "avatars", icon: "👤" },
+  { id: "sticker", labelKey: "stickers_tab", icon: "⭐" },
+  { id: "background", labelKey: "backgrounds", icon: "🖼️" },
 ];
 
 export default function ShopPage() {
   const { t } = useTranslation("ui");
+  const router = useRouter();
   const { activeChild, refreshActiveChild } = useChildProfile();
   const [tab, setTab] = useState<ShopTab>("avatar");
   const [allItems, setAllItems] = useState<CosmeticItem[]>([]);
@@ -79,8 +81,14 @@ export default function ShopPage() {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="text-2xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+      <div className="flex items-center gap-3 mb-5">
+        <button
+          onClick={() => router.push("/menu")}
+          className="w-10 h-10 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-all min-h-[44px] min-w-[44px]"
+        >
+          ←
+        </button>
+        <h1 className="flex-1 text-2xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
           🛍️ {t("shop")}
         </h1>
         <span className="text-lg font-extrabold bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full shadow-md">
@@ -99,7 +107,7 @@ export default function ShopPage() {
                 : "bg-white text-gray-600 border-2 border-gray-200 hover:border-indigo-300"
             }`}
           >
-            {tabItem.icon} {tabItem.label}
+            {tabItem.icon} {t(tabItem.labelKey)}
           </button>
         ))}
       </div>

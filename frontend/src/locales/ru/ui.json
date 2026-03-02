@@ -55,5 +55,11 @@
   "artwork_limit_title": "Лимит работ",
   "artwork_limit_message": "У вас {{count}} из {{max}} работ.",
   "artwork_limit_replace": "Самая старая будет заменена.",
-  "save_anyway": "Сохранить всё равно"
+  "save_anyway": "Сохранить всё равно",
+  "avatars": "Аватары",
+  "stickers_tab": "Наклейки",
+  "backgrounds": "Фоны",
+  "whos_playing": "Кто играет сегодня?",
+  "recent_activity": "Недавняя активность",
+  "per_week": "/ неделю"
 }

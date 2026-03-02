@@ -55,5 +55,11 @@
   "artwork_limit_title": "Límite de obras",
   "artwork_limit_message": "Tienes {{count}} de {{max}} obras.",
   "artwork_limit_replace": "Se reemplazará la más antigua.",
-  "save_anyway": "Guardar de todos modos"
+  "save_anyway": "Guardar de todos modos",
+  "avatars": "Avatares",
+  "stickers_tab": "Stickers",
+  "backgrounds": "Fondos",
+  "whos_playing": "¿Quién juega hoy?",
+  "recent_activity": "Actividad reciente",
+  "per_week": "/ semana"
 }

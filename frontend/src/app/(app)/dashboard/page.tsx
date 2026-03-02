@@ -128,7 +128,7 @@ export default function DashboardPage() {
                   {data.time_spent.today_minutes} <span className="text-lg">{t("minutes")}</span>
                 </p>
                 <p className="text-xs text-indigo-400 font-semibold mt-1">
-                  {data.time_spent.week_minutes} {t("minutes")} / week
+                  {data.time_spent.week_minutes} {t("minutes")} {t("per_week")}
                 </p>
               </Card>
             </div>
@@ -167,7 +167,7 @@ export default function DashboardPage() {
 
             {data.recent_activity.length > 0 && (
               <Card padding="md">
-                <h2 className="font-extrabold text-gray-800 mb-4">Recent Activity</h2>
+                <h2 className="font-extrabold text-gray-800 mb-4">{t("recent_activity")}</h2>
                 <div className="space-y-2">
                   {data.recent_activity.slice(0, 10).map((act, i) => (
                     <div

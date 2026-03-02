@@ -76,7 +76,7 @@ export default function CookingPage() {
           🍳 {t("cooking")}
         </h1>
         <p className="text-gray-500 font-semibold text-sm mb-6">
-          Pick a recipe!
+          {t("pick_a_recipe")}
         </p>
 
         <div className="grid grid-cols-2 gap-4 w-full max-w-md">
@@ -111,24 +111,24 @@ export default function CookingPage() {
             {t("great_job")}
           </h2>
           <p className="text-gray-600 font-semibold mb-2">
-            {recipe.name[lang] || recipe.name.en} is ready!
+            {recipe.name[lang] || recipe.name.en} {t("is_ready")}
           </p>
           {lastErrors === 0 && (
-            <p className="text-green-500 font-bold text-lg mb-4">Perfect chef!</p>
+            <p className="text-green-500 font-bold text-lg mb-4">{t("perfect_chef")}</p>
           )}
           <div className="flex gap-3 mt-4">
             <Button variant="secondary" onClick={handleTryRecipeAgain}>
-              Again
+              {t("again")}
             </Button>
             <Button variant="primary" onClick={handlePlayAgain}>
-              New Recipe
+              {t("new_recipe")}
             </Button>
           </div>
         </div>
 
         <CelebrationOverlay
           show={showCelebration}
-          message="🍽️ Delicious! 🍽️"
+          message="⭐🎉⭐"
           onDone={() => setShowCelebration(false)}
         />
       </div>
@@ -157,7 +157,7 @@ export default function CookingPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="🍽️ Yummy! 🍽️"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

@@ -127,7 +127,7 @@ export default function FillTheGapsPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="⭐ Wonderful! ⭐"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

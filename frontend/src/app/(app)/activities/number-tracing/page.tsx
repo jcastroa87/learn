@@ -116,7 +116,7 @@ export default function NumberTracingPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="⭐ Super! ⭐"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

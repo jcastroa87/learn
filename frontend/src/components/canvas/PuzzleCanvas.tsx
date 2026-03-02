@@ -11,7 +11,6 @@ interface PuzzlePiece {
   currentX: number;
   currentY: number;
   placed: boolean;
-  content: string;
 }
 
 interface PuzzleCanvasProps {
@@ -35,6 +34,7 @@ export default function PuzzleCanvas({
 }: PuzzleCanvasProps) {
   const gridSize = getGridSize(difficulty);
   const cellSize = canvasSize / gridSize;
+  const pieceSize = cellSize - 4;
   const containerRef = useRef<HTMLDivElement>(null);
   const [pieces, setPieces] = useState<PuzzlePiece[]>([]);
   const [dragging, setDragging] = useState<number | null>(null);
@@ -42,7 +42,6 @@ export default function PuzzleCanvas({
 
   useEffect(() => {
     const newPieces: PuzzlePiece[] = [];
-    const subEmojis = generateSubContent(image, gridSize);
     for (let r = 0; r < gridSize; r++) {
       for (let c = 0; c < gridSize; c++) {
         const id = r * gridSize + c;
@@ -53,7 +52,6 @@ export default function PuzzleCanvas({
           currentX: Math.random() * (canvasSize - cellSize),
           currentY: canvasSize + 20 + Math.random() * 120,
           placed: false,
-          content: subEmojis[id] || image,
         });
       }
     }
@@ -180,7 +178,7 @@ export default function PuzzleCanvas({
         <div
           key={piece.id}
           onPointerDown={(e) => handlePointerDown(e, piece.id)}
-          className={`absolute flex items-center justify-center rounded-lg border-2 transition-shadow select-none ${
+          className={`absolute rounded-lg border-2 transition-shadow select-none ${
             piece.placed
               ? "border-green-400 bg-green-50 pointer-events-none"
               : dragging === piece.id
@@ -190,25 +188,40 @@ export default function PuzzleCanvas({
           style={{
             left: piece.currentX,
             top: piece.currentY,
-            width: cellSize - 4,
-            height: cellSize - 4,
-            fontSize: cellSize * 0.5,
+            width: pieceSize,
+            height: pieceSize,
             touchAction: "none",
           }}
         >
-          {piece.content}
+          {/* Clipped emoji fragment */}
+          <div
+            style={{
+              width: pieceSize,
+              height: pieceSize,
+              overflow: "hidden",
+              position: "relative",
+              borderRadius: 6,
+            }}
+          >
+            <span
+              style={{
+                position: "absolute",
+                fontSize: pieceSize * gridSize * 0.85,
+                lineHeight: 1,
+                left: -piece.targetCol * pieceSize,
+                top: -piece.targetRow * pieceSize,
+                width: pieceSize * gridSize,
+                height: pieceSize * gridSize,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {image}
+            </span>
+          </div>
         </div>
       ))}
     </div>
   );
-}
-
-function generateSubContent(emoji: string, gridSize: number): string[] {
-  const total = gridSize * gridSize;
-  const variants = [emoji];
-  // For puzzles, each piece shows the main emoji with a number badge
-  for (let i = 0; i < total; i++) {
-    variants.push(emoji);
-  }
-  return variants.slice(0, total);
 }

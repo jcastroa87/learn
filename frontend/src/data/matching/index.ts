@@ -7,15 +7,34 @@ export interface MatchPair {
   ttsText?: Record<string, string>;
 }
 
-const matchingData: Record<MatchingMode, MatchPair[]> = {
-  letters: [
-    { id: "a", left: "A", right: "a", ttsText: { es: "a", en: "ay", ru: "а" } },
-    { id: "b", left: "B", right: "b", ttsText: { es: "be", en: "bee", ru: "бэ" } },
-    { id: "c", left: "C", right: "c", ttsText: { es: "ce", en: "see", ru: "цэ" } },
-    { id: "d", left: "D", right: "d", ttsText: { es: "de", en: "dee", ru: "дэ" } },
-    { id: "e", left: "E", right: "e", ttsText: { es: "e", en: "ee", ru: "е" } },
-    { id: "f", left: "F", right: "f", ttsText: { es: "efe", en: "eff", ru: "эф" } },
+const letterPairs: Record<string, MatchPair[]> = {
+  en: [
+    { id: "a", left: "A", right: "a", ttsText: { en: "ay" } },
+    { id: "b", left: "B", right: "b", ttsText: { en: "bee" } },
+    { id: "c", left: "C", right: "c", ttsText: { en: "see" } },
+    { id: "d", left: "D", right: "d", ttsText: { en: "dee" } },
+    { id: "e", left: "E", right: "e", ttsText: { en: "ee" } },
+    { id: "f", left: "F", right: "f", ttsText: { en: "eff" } },
   ],
+  es: [
+    { id: "a", left: "A", right: "a", ttsText: { es: "a" } },
+    { id: "b", left: "B", right: "b", ttsText: { es: "be" } },
+    { id: "c", left: "C", right: "c", ttsText: { es: "ce" } },
+    { id: "d", left: "D", right: "d", ttsText: { es: "de" } },
+    { id: "e", left: "E", right: "e", ttsText: { es: "e" } },
+    { id: "f", left: "F", right: "f", ttsText: { es: "efe" } },
+  ],
+  ru: [
+    { id: "а", left: "А", right: "а", ttsText: { ru: "а" } },
+    { id: "б", left: "Б", right: "б", ttsText: { ru: "бэ" } },
+    { id: "в", left: "В", right: "в", ttsText: { ru: "вэ" } },
+    { id: "г", left: "Г", right: "г", ttsText: { ru: "гэ" } },
+    { id: "д", left: "Д", right: "д", ttsText: { ru: "дэ" } },
+    { id: "е", left: "Е", right: "е", ttsText: { ru: "е" } },
+  ],
+};
+
+const matchingData: Record<string, MatchPair[]> = {
   numbers: [
     { id: "1", left: "1", right: "uno", ttsText: { es: "uno", en: "one", ru: "один" } },
     { id: "2", left: "2", right: "dos", ttsText: { es: "dos", en: "two", ru: "два" } },
@@ -50,7 +69,11 @@ const matchingData: Record<MatchingMode, MatchPair[]> = {
   ],
 };
 
-export function getMatchPairs(mode: MatchingMode, count = 6): MatchPair[] {
+export function getMatchPairs(mode: MatchingMode, language = "es", count = 6): MatchPair[] {
+  if (mode === "letters") {
+    const pairs = letterPairs[language] || letterPairs.en;
+    return pairs.slice(0, count).sort(() => Math.random() - 0.5);
+  }
   const pairs = matchingData[mode] || matchingData.colors;
   return pairs.slice(0, count).sort(() => Math.random() - 0.5);
 }

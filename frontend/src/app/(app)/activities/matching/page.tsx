@@ -31,11 +31,12 @@ export default function MatchingPage() {
     bananas: number;
   } | null>(null);
 
+  const lang = activeChild?.language || "es";
   const pairs = useMemo(() => {
-    // Re-generate pairs when mode or round changes
+    // Re-generate pairs when mode, round, or language changes
     void round;
-    return getMatchPairs(mode);
-  }, [mode, round]);
+    return getMatchPairs(mode, lang);
+  }, [mode, round, lang]);
 
   const handleModeChange = useCallback(
     (newMode: MatchingMode) => {
@@ -113,7 +114,7 @@ export default function MatchingPage() {
                 </p>
                 {lastResult.errors === 0 && (
                   <p className="text-green-500 font-bold text-lg mb-4">
-                    Perfect! +3 bonus 🍌
+                    {t("perfect_bonus")} 🍌
                   </p>
                 )}
               </>
@@ -133,7 +134,7 @@ export default function MatchingPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="🎉 Bravo! 🎉"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

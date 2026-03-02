@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { apiGet, apiDelete } from "@/lib/api";
@@ -31,6 +32,7 @@ interface ArtworkItem {
 
 export default function GalleryPage() {
   const { t } = useTranslation("ui");
+  const router = useRouter();
   const { activeChild } = useChildProfile();
   const [artworks, setArtworks] = useState<ArtworkItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,9 +83,17 @@ export default function GalleryPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-extrabold mb-4 text-center bg-gradient-to-r from-sky-500 to-blue-500 bg-clip-text text-transparent">
-        🖼️ {t("gallery")}
-      </h1>
+      <div className="flex items-center gap-3 mb-4">
+        <button
+          onClick={() => router.push("/menu")}
+          className="w-10 h-10 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-all min-h-[44px] min-w-[44px]"
+        >
+          ←
+        </button>
+        <h1 className="flex-1 text-2xl font-extrabold text-center bg-gradient-to-r from-sky-500 to-blue-500 bg-clip-text text-transparent">
+          🖼️ {t("gallery")}
+        </h1>
+      </div>
 
       {loading ? (
         <LoadingSpinner className="py-10" />

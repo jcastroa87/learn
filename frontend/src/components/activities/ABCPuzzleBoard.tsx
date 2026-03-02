@@ -6,14 +6,12 @@ import { getShuffledOptions } from "@/data/abc-puzzles";
 
 interface ABCPuzzleBoardProps {
   puzzle: ABCPuzzle;
-  language: string;
   onCorrect: () => void;
   onWrong: () => void;
 }
 
 export default function ABCPuzzleBoard({
   puzzle,
-  language,
   onCorrect,
   onWrong,
 }: ABCPuzzleBoardProps) {
@@ -22,7 +20,6 @@ export default function ABCPuzzleBoard({
   const [wrongLetter, setWrongLetter] = useState<string | null>(null);
 
   const options = useMemo(() => getShuffledOptions(puzzle), [puzzle]);
-  const word = puzzle.word[language] || puzzle.word.en;
 
   const handleSelect = useCallback(
     (letter: string) => {
@@ -52,7 +49,7 @@ export default function ABCPuzzleBoard({
           <span className={`inline-block ${answered ? "text-green-500" : "text-indigo-400"} transition-colors`}>
             {answered ? puzzle.letter : "?"}
           </span>
-          <span>{word.slice(1)}</span>
+          <span>{puzzle.word.slice(1)}</span>
         </div>
       </div>
 

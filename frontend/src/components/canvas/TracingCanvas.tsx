@@ -28,7 +28,7 @@ export default function TracingCanvas({
   canvasSize,
   onComplete,
   threshold = 30,
-  completionTarget = 0.8,
+  completionTarget = 0.95,
 }: TracingCanvasProps) {
   const [traceLines, setTraceLines] = useState<number[][]>([]);
   const [currentLine, setCurrentLine] = useState<number[]>([]);
@@ -141,21 +141,6 @@ export default function TracingCanvas({
         style={{ touchAction: "none" }}
       >
         <Layer>
-          {/* Ghost letter */}
-          <Text
-            text={letter}
-            x={0}
-            y={0}
-            width={canvasSize}
-            height={canvasSize}
-            fontSize={canvasSize * 0.7}
-            fill="#f0f0f0"
-            fontFamily="Arial, sans-serif"
-            fontStyle="bold"
-            align="center"
-            verticalAlign="middle"
-          />
-
           {/* Guide path — one dashed line per stroke */}
           {strokes.map((stroke, si) => {
             const pts = stroke.flatMap((wp) => [wp.x * scale, wp.y * scale]);

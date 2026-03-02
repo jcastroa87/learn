@@ -141,7 +141,7 @@ export default function MemoryCardsPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="🎉 Amazing! 🎉"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

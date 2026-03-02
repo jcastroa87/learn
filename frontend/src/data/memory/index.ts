@@ -13,7 +13,7 @@ export interface MemoryMode {
 export const MEMORY_MODES: MemoryMode[] = [
   {
     id: "letters",
-    label: "Letters",
+    label: "letters",
     icon: "🔤",
     items: [
       { content: "A", ttsText: { es: "A", en: "A", ru: "А" } },
@@ -28,7 +28,7 @@ export const MEMORY_MODES: MemoryMode[] = [
   },
   {
     id: "numbers",
-    label: "Numbers",
+    label: "numbers",
     icon: "🔢",
     items: [
       { content: "1", ttsText: { es: "uno", en: "one", ru: "один" } },
@@ -43,7 +43,7 @@ export const MEMORY_MODES: MemoryMode[] = [
   },
   {
     id: "animals",
-    label: "Animals",
+    label: "animals",
     icon: "🐾",
     items: [
       { content: "🐶", ttsText: { es: "perro", en: "dog", ru: "собака" } },
@@ -58,7 +58,7 @@ export const MEMORY_MODES: MemoryMode[] = [
   },
   {
     id: "colors",
-    label: "Colors",
+    label: "colors",
     icon: "🎨",
     items: [
       { content: "🔴", ttsText: { es: "rojo", en: "red", ru: "красный" } },
@@ -73,7 +73,7 @@ export const MEMORY_MODES: MemoryMode[] = [
   },
   {
     id: "shapes",
-    label: "Shapes",
+    label: "shapes",
     icon: "⭐",
     items: [
       { content: "⭐", ttsText: { es: "estrella", en: "star", ru: "звезда" } },

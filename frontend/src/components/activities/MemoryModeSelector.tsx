@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import type { MemoryDifficulty } from "./MemoryCardGrid";
 
 interface MemoryModeSelectorProps {
@@ -23,6 +24,8 @@ export default function MemoryModeSelector({
   difficulty,
   onDifficultySelect,
 }: MemoryModeSelectorProps) {
+  const { t } = useTranslation("activities");
+
   return (
     <div className="space-y-3">
       <div className="flex gap-2 justify-center flex-wrap">
@@ -37,7 +40,7 @@ export default function MemoryModeSelector({
             }`}
           >
             <span className="mr-1">{mode.icon}</span>
-            {mode.label}
+            {t(mode.label)}
           </button>
         ))}
       </div>

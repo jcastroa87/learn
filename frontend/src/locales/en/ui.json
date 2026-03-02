@@ -55,5 +55,11 @@
   "artwork_limit_title": "Artwork limit",
   "artwork_limit_message": "You have {{count}} of {{max}} artworks.",
   "artwork_limit_replace": "The oldest one will be replaced.",
-  "save_anyway": "Save anyway"
+  "save_anyway": "Save anyway",
+  "avatars": "Avatars",
+  "stickers_tab": "Stickers",
+  "backgrounds": "Backgrounds",
+  "whos_playing": "Who's playing today?",
+  "recent_activity": "Recent Activity",
+  "per_week": "/ week"
 }

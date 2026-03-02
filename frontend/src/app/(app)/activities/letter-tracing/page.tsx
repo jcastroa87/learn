@@ -33,6 +33,13 @@ export default function LetterTracingPage() {
   const [activeLetter, setActiveLetter] = useState(letters[0]?.letter || "A");
   const [showCelebration, setShowCelebration] = useState(false);
 
+  // Sync activeLetter when language/letters change (e.g., Russian Cyrillic set loads)
+  useEffect(() => {
+    if (letters.length > 0 && !letters.some((l) => l.letter === activeLetter)) {
+      setActiveLetter(letters[0].letter);
+    }
+  }, [letters, activeLetter]);
+
   const completedLetters = useMemo(
     () =>
       new Set(
@@ -139,7 +146,7 @@ export default function LetterTracingPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="⭐ Great job! ⭐"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

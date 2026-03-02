@@ -46,5 +46,11 @@
   "taps_used": "{{count}} нажатий",
   "perfect": "Отлично! Без ошибок",
   "next_scene": "Следующая сцена",
-  "next_round": "Следующий раунд"
+  "next_round": "Следующий раунд",
+  "perfect_bonus": "Идеально! +3 бонус",
+  "perfect_chef": "Идеальный повар!",
+  "pick_a_recipe": "Выбери рецепт!",
+  "is_ready": "готово!",
+  "again": "Ещё раз",
+  "new_recipe": "Новый рецепт"
 }

@@ -28,7 +28,8 @@ export default function FreeDrawingPage() {
     soundEnabled: true,
     language: activeChild?.language || "es",
   });
-  const { pushAction, canUndo } = useUndoRedo();
+  const { pushAction, undo, canUndo } = useUndoRedo();
+  const [undoTrigger, setUndoTrigger] = useState(0);
   const stageRef = useRef(null);
 
   const [activeColor, setActiveColor] = useState("#000000");
@@ -83,7 +84,7 @@ export default function FreeDrawingPage() {
     return <LoadingSpinner className="py-20" />;
   }
 
-  const canvasSize = Math.min(400, typeof window !== "undefined" ? window.innerWidth - 32 : 400);
+  const canvasSize = Math.min(600, typeof window !== "undefined" ? Math.min(window.innerWidth - 32, window.innerHeight - 260) : 600);
 
   return (
     <div className="flex flex-col items-center p-4">
@@ -99,6 +100,7 @@ export default function FreeDrawingPage() {
           backgroundColor={backgroundColor}
           onAction={pushAction}
           stageRef={stageRef}
+          undoTrigger={undoTrigger}
         />
       </div>
 
@@ -130,7 +132,7 @@ export default function FreeDrawingPage() {
             />
           </Button>
         ))}
-        <Button size="sm" variant="ghost" disabled={!canUndo}>
+        <Button size="sm" variant="ghost" disabled={!canUndo} onClick={() => { undo(); setUndoTrigger((n) => n + 1); }}>
           {t("undo")}
         </Button>
         <Button

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChildProfile } from "@/hooks/useChildProfile";
 import { useProgress, useActivityTimer } from "@/hooks/useProgress";
 import { useAudio } from "@/hooks/useAudio";
-import { ABC_PUZZLES } from "@/data/abc-puzzles";
+import { getABCPuzzles } from "@/data/abc-puzzles";
 import ABCPuzzleBoard from "@/components/activities/ABCPuzzleBoard";
 import CelebrationOverlay from "@/components/ui/CelebrationOverlay";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -27,8 +27,15 @@ export default function ABCPuzzlesPage() {
   const [errors, setErrors] = useState(0);
   const [key, setKey] = useState(0);
 
-  const puzzle = ABC_PUZZLES[currentIndex];
   const lang = activeChild?.language || "es";
+  const puzzles = useMemo(() => getABCPuzzles(lang), [lang]);
+  const puzzle = puzzles[currentIndex];
+
+  // Reset index when language changes (different alphabet size)
+  useEffect(() => {
+    setCurrentIndex(0);
+    setKey((k) => k + 1);
+  }, [lang]);
 
   const completedLetters = new Set(
     records.filter((r) => r.status === "completed").map((r) => r.item_identifier)
@@ -51,13 +58,13 @@ export default function ABCPuzzlesPage() {
     await recordProgress("abc_puzzles", puzzle.letter, "completed", { errors }, elapsed);
 
     setTimeout(() => {
-      if (currentIndex < ABC_PUZZLES.length - 1) {
+      if (currentIndex < puzzles.length - 1) {
         setCurrentIndex((i) => i + 1);
         setErrors(0);
         setKey((k) => k + 1);
       }
     }, 1500);
-  }, [success, activeChild, getElapsedSeconds, recordProgress, puzzle.letter, errors, currentIndex]);
+  }, [success, activeChild, getElapsedSeconds, recordProgress, puzzle.letter, errors, currentIndex, puzzles.length]);
 
   const handleWrong = useCallback(() => {
     errorSound();
@@ -79,20 +86,19 @@ export default function ABCPuzzlesPage() {
       </h1>
 
       <p className="text-gray-500 font-semibold text-sm mb-4">
-        {currentIndex + 1} / {ABC_PUZZLES.length}
+        {currentIndex + 1} / {puzzles.length}
       </p>
 
       <ABCPuzzleBoard
         key={`${puzzle.letter}-${key}`}
         puzzle={puzzle}
-        language={lang}
         onCorrect={handleCorrect}
         onWrong={handleWrong}
       />
 
       {/* Letter progress strip */}
       <div className="flex gap-1.5 overflow-x-auto py-4 px-1 mt-4 no-scrollbar">
-        {ABC_PUZZLES.map((p, i) => (
+        {puzzles.map((p, i) => (
           <button
             key={p.letter}
             onClick={() => handleLetterSelect(i)}
@@ -111,7 +117,7 @@ export default function ABCPuzzlesPage() {
 
       <CelebrationOverlay
         show={showCelebration}
-        message="⭐ Correct! ⭐"
+        message="⭐🎉⭐"
         onDone={() => setShowCelebration(false)}
       />
     </div>

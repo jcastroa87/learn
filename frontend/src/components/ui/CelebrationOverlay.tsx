@@ -78,8 +78,7 @@ export default function CelebrationOverlay({
             height: p.size,
             backgroundColor: p.color,
             borderRadius: Math.random() > 0.5 ? "50%" : "2px",
-            animation: `confetti-fall ${1.5 + Math.random()}s ease-in forwards`,
-            animationDelay: `${p.delay}s`,
+            animation: `confetti-fall ${1.5 + Math.random()}s ease-in ${p.delay}s forwards`,
             transform: `rotate(${p.rotation}deg)`,
           }}
         />

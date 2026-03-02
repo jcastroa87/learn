@@ -46,5 +46,11 @@
   "taps_used": "{{count}} taps used",
   "perfect": "Perfect! No errors",
   "next_scene": "Next scene",
-  "next_round": "Next round"
+  "next_round": "Next round",
+  "perfect_bonus": "Perfect! +3 bonus",
+  "perfect_chef": "Perfect chef!",
+  "pick_a_recipe": "Pick a recipe!",
+  "is_ready": "is ready!",
+  "again": "Again",
+  "new_recipe": "New Recipe"
 }
