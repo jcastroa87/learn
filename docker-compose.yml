@@ -6,7 +6,7 @@ services:
     container_name: learn-app
     restart: unless-stopped
     ports:
-      - "8000:8083"
+      - "8000:8080"
     volumes:
       - ./backend:/var/www/html
       - ./backend/storage/app/artworks:/var/www/html/storage/app/artworks
@@ -58,7 +58,7 @@ services:
       - /app/node_modules
       - /app/.next
     environment:
-      - NEXT_PUBLIC_API_URL=http://app:8083
+      - NEXT_PUBLIC_API_URL=http://app:8080
     depends_on:
       - app
     networks:
